@@ -103,7 +103,10 @@
                 <div class="card shadow mb-4">
                     <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Minha Lista: XXXX</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Minha Lista: @foreach($listname as $titulo)
+                            {{ $titulo }}
+                        @endforeach
+                        </h6>
                         <div class="dropdown no-arrow">
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -139,7 +142,7 @@
                                         <td>{{  $sale->cpfcnpj  }}</td>
                                         <td>{{  $sale->status  }}</td>
                                         <td>{{  $sale->situacao  }}</td>
-                                        <th class="text-center"><a href="{{ $sale->link_pay }}" target="_black"><i class="fa fa-copy text-primary"></i></a></th>
+                                        <th class="text-center"><a href="{{ $sale->link_pay }}" target="_blank"><i class="fa fa-copy text-primary"></i></a></th>
                                     </tr>
                                 </tbody>
                                 @endforeach
@@ -185,9 +188,9 @@
                                 @foreach ($users as $user)
                                 <tfoot>
                                     <tr>
+                                        <th>{{ $user->id }}</th>
                                         <th>{{ $user->name }}</th>
                                         <th>{{ $user->profile }}</th>
-                                        <th>Office</th>
                                         <th class="text-center"><a onclick="geraPlanilha()"><i class="fa fa-download text-primary"></i></a></th>
                                     </tr>
                                 </tfoot>
