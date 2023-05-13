@@ -24,6 +24,7 @@ class User extends Authenticatable
         'updatedAt',
         'cpf',
         'perfil',
+        'profile'
 
     ];
 
