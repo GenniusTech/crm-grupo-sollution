@@ -39,12 +39,14 @@ class DashController extends Controller
         $sales = CrmSales::where('id_user', $user->id)
         ->whereHas('list', function($query) {
             $query->where('status', 1);
-        })
+        }) 
         ->get();
 
         $users = User::orderBy('name')->get();
 
+        $listname = CrmList::where('status', 1)->pluck('titulo');
 
+      
         return view('dashboard.index', [
             'notfic' => $notfic,
             'total' => $total,
@@ -52,6 +54,7 @@ class DashController extends Controller
             'percent' => $percent,
             'sales' => $sales,
             'users' => $users,
+            'listname' => $listname
         ]);
         
    

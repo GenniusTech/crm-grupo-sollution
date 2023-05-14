@@ -86,6 +86,11 @@
             <!-- /end administrador -->
             @endif
             <div class="col-sm-12 col-lg-12">
+                @if(session('mensagem'))
+                <div class="alert alert-warning">
+                    {{ session('mensagem') }}
+                </div>
+            @endif
                 <div class="card shadow mb-4">
                     <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

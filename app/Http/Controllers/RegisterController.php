@@ -30,7 +30,7 @@ class RegisterController extends Controller
             'cpf' => $request->cpf,
             'email' => $request->email,
             'passwordHash' => bcrypt($request->password),
-  
+            'profile' => 'user',
         ]);
 
         Auth::login($user);
