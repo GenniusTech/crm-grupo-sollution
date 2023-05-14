@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('link_pay')->nullable();
             $table->integer('id_pay')->nullable();
             $table->integer('id_lista');
+            $table->binary('file')->nullable();
             $table->timestamps();
         });
     }

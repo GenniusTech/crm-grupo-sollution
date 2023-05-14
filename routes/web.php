@@ -31,8 +31,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/cadastroNotficacao', [NotificacaoController::class, 'cadastroNotficacao'])->name('cadastroNotficacao');
 
-    Route::get('/cpfcnpj',  [CpfcnpjController::class, 'cpfcnpj'])->name('cpfcnpj');
-    Route::post('/cadastroCpfCnpj',  [CpfcnpjController::class, 'cadastroCpfCnpj'])->name('cadastroCpfCnpj');
+    Route::get('/cpfcnpj', [CpfcnpjController::class, 'cpfcnpj'])->name('cpfcnpj');
+    Route::post('/cadastroCpfCnpj', [CpfcnpjController::class, 'cadastroCpfCnpj'])->name('cadastroCpfCnpj');
 
     Route::get('/cursoLimpaNome',[CursoLimpaNomeController::class, 'cursoLimpaNome'])->name('cursoLimpaNome');
     

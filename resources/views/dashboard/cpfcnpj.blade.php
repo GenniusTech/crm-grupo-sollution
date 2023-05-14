@@ -11,6 +11,24 @@
 
         <!-- Cadastrar CPF/CNPJ -->
         <div class="row">
+            <div class="col-sm-12 col-lg-12">
+                
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+            @if(Session::has('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+             @endif
+        
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div
@@ -46,7 +64,7 @@
                             </div>
                         </form>
 
-                        <form id="cadastro" class="user d-none"method="POST" action="{{ route('cadastroCpfCnpj') }}">
+                        <form id="cadastro" class="user d-none"method="POST"  enctype="multipart/form-data" action="{{ route('cadastroCpfCnpj') }}">
                             <input type="hidden" value={{  csrf_token() }} name="_token">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-8 offset-lg-2 row">
@@ -70,7 +88,7 @@
                                         <input type="number" id="telefone" class="form-control form-control-user" name="telefone" placeholder="Telefone">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-12">
-                                        <input type="file" class="form-control form-control-user" name="ficha_associativa">
+                                        <input type="file" style="padding:5px;" class="form-control form-control-user" name="file" required>
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                         <div class="form-group">
