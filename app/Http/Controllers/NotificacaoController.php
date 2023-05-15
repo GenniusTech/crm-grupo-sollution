@@ -23,4 +23,18 @@ class NotificacaoController extends Controller
         
         return redirect()->route('list');
     }
+
+    public function destroy($id)
+    {
+        $user = auth()->user();
+        $notificacao = Notificacao::find($id);
+    
+        if ($user->profile === 'admin' || $notificacao->tipo === $user->id) {
+            $notificacao->delete();
+            return redirect()->back()->with('success', 'Notificação excluída com sucesso!');
+        }
+    
+        return redirect()->back();
+    }
+    
 }

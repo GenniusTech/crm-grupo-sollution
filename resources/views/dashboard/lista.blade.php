@@ -65,9 +65,13 @@
                                             <input type="text" id="titulo" class="form-control form-control-user" name="mensagem" placeholder="Mensagem">
                                         </div>
                                         <div class="form-group col-sm-12 col-lg-12">
-                                            <select class="form-control" name="user_notificacao">
-                                                <option value="all">Todos</option>
-                                                <option value="">TODOS OS USUÁRIOS AQUI</option>
+                                            <select class="form-control" name="tipo">
+                                                <option value="0">Todos</option>
+                                                @foreach ($userlist as $userslist )
+
+                                                <option value="{{ $userslist->id }}">{{ $userslist->name }}</option>
+                                                @endforeach
+                                                
                                             </select>
                                         </div>
                                         <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
@@ -119,14 +123,18 @@
                                         <th>{{ $list->dataInicial }} <br> {{ $list->dataFinal }}</th>
                                         <th class="text-center"><a href="{{ route('sales.export', ['id_lista' => $list->id]) }}" ><button class="btn btn-primary"><i class="fa fa-credit-card text-light"></i></button></a></th>
                                         <th class="text-center"><button class="btn btn-primary"><i class="fa fa-file text-light"></i></button></th>
+                                       
                                         <th class="text-center">
+                                            @if (Auth::user()->profile === 'admin')
                                             <form action="{{ route('ativar-lista', $list->id) }}" method="POST">
                                                 @if($list->status != 1)
                                                 @csrf
                                                 <button type="submit" class="btn btn-success"><i class="fa fa-check"></i></button><!--botão check-->
                                                 @endif
                                             </form>
+                                            @endif
                                         </th>
+                                        
                                     </tr>
                                     @endforeach
                                 </tfoot>

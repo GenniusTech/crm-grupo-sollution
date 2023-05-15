@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lista', [ListController::class, 'list'])->name('list');
     Route::post('/cadastroList', [ListController::class, 'cadastroList'])->name('cadastroList');
     Route::post('/ativar-lista/{id}', [ListController::class,'ativarLista'])->name('ativar-lista');
-    Route::delete('/notificacao/{id}', [ListController::class, 'destroy'])->name('notificacao.destroy');
+    Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
     Route::get('/sales/export/{id_lista}',[ListController::class, 'export'])->name('sales.export');
 
 
