@@ -114,6 +114,13 @@
                                 <h6 class="dropdown-header">
                                     Notificações
                                 </h6>
+
+                             @if(session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                             @endif
+
                                 @foreach ($notfic as $notfi)
                                 <form action="{{ route('notificacao.destroy', $notfi->id) }}" method="POST">
                                     @csrf

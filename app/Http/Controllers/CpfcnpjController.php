@@ -16,11 +16,21 @@ class CpfcnpjController extends Controller
 {
     public function cpfcnpj()
     {
-        $notfic = Notificacao::all();
+        $user = auth()->user(); // Supondo que você esteja usando autenticação
+
+        $notfic = Notificacao::where(function ($query) use ($user) {
+            if ($user->profile === 'admin') {
+                $query->where('tipo', '!=', ''); // Todas as notificações
+            } else {
+                $query->where('tipo', 0) // Notificações com tipo igual a 0
+                    ->orWhere('tipo', $user->id); // Notificações com tipo igual ao ID do usuário logado
+            }
+        })->get();
+        
         $listaAtiva = CrmList::where('status', '=', 1)->first();
         
         if (!$listaAtiva) {
-            return redirect()->route('list')->with('mensagem', 'Lista ativa não encontrada, cadastre ou ative uma lista');
+            return redirect()->route('list')->with('mensagem', 'A lista ativa não foi encontrada. Por favor, cadastre ou ative uma lista.');
         }
         
         
