@@ -17,14 +17,19 @@ class ListController extends Controller
 
     public function list()
     {
-        $user = auth()->user(); // Supondo que você esteja usando autenticação
+        $users = auth()->user();
 
-        $notfic = Notificacao::where(function ($query) use ($user) {
-            if ($user->profile === 'admin') {
-                $query->where('tipo', '!=', ''); // Todas as notificações
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '') // Todas as notificações
+                        ->orWhere('tipo', 0); // Notificações com tipo igual a 0
+                });
             } else {
-                $query->where('tipo', 0) // Notificações com tipo igual a 0
-                    ->orWhere('tipo', $user->id); // Notificações com tipo igual ao ID do usuário logado
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0) // Notificações com tipo igual a 0
+                        ->orWhere('tipo', $users->id); // Notificações com tipo igual ao ID do usuário logado
+                });
             }
         })->get();
 
@@ -78,25 +83,25 @@ class ListController extends Controller
         return redirect()->back();
     }
 
-    public function export($id_lista)
-    {
-    // Obter o status da lista correspondente
-    $list = CrmList::find($id_lista);
-    $status = $list->confirmed_status;
+    // public function export($id_lista)
+    // {
+    // // Obter o status da lista correspondente
+    // $list = CrmList::find($id_lista);
+    // $status = $list->confirmed_status;
 
-    // Verificar o status da lista e definir a consulta adequada
-    if ($status == 1) {
-        $sales = CrmSales::where('id_lista', $id_lista)->get();
-    } else {
-        $user_id = auth()->user()->id;
-        $sales = CrmSales::where('id_lista', $id_lista)
-                          ->where('id_user', $user_id)
-                          ->get();
-    }
+    // // Verificar o status da lista e definir a consulta adequada
+    // if ($status == 1) {
+    //     $sales = CrmSales::where('id_lista', $id_lista)->get();
+    // } else {
+    //     $user_id = auth()->user()->id;
+    //     $sales = CrmSales::where('id_lista', $id_lista)
+    //                       ->where('id_user', $user_id)
+    //                       ->get();
+    // }
 
-    // Exportar os dados para o Excel
-    return Excel::download(new Exporter($sales), 'sales.xlsx');
-    }
+    // // Exportar os dados para o Excel
+    // return Excel::download(new Exporter($sales), 'sales.xlsx');
+    // }
 
 
 
