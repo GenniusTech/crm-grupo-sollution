@@ -129,20 +129,42 @@
                                         <th>N°</th>
                                         <th>Cliente</th>
                                         <th>CPF/CNPJ</th>
-                                        <th>Status</th>
                                         <th>Situação</th>
-                                        <th class="text-center">Link de Pagamento</th>
+                                        <th>Status</th>
+                                        <th class="text-center">Gerar/Copiar link de Pagamento</th>
                                     </tr>
                                 </thead>
                                 @foreach ($sales as  $key =>$sale )
                                      <tbody>
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{  $key + 1 }}</td>
                                         <td>{{  $sale->cliente  }}</td>
                                         <td>{{  $sale->cpfcnpj  }}</td>
-                                        <td>{{  $sale->status  }}</td>
                                         <td>{{  $sale->situacao  }}</td>
-                                        <th class="text-center"><a href="{{ $sale->link_pay }}" target="_blank"><i class="fa fa-copy text-primary"></i></a></th>
+                                        <td>
+                                            @switch($sale->status)
+                                                @case('PENDING')
+                                                    Pendente
+                                                    @break
+                                                @case('PENDING_PAY')
+                                                    Aguardando pagamento
+                                                    @break
+                                                @case('PAYMENT_RECEIVED')
+                                                    Aprovado
+                                                    @break
+                                                @case('PAYMENT_CONFIRMED')
+                                                    Aprovado
+                                                    @break
+                                                @default
+                                                    Situação não identificada!
+                                            @endswitch
+                                        </td>
+                                        @if(!empty($sale->link_pay))
+                                            <td class="text-center"><button class="btn btn-info" type="button" onclick="copiaLink(this)" data-link="{{$sale->link_pay}}"><i class="fa fa-copy"></i></button></td>
+                                        @else
+                                            <td class="text-center"><button class="btn btn-success" type="button" onclick="geraPagamento(this)" data-id="{{$sale->id}}" data-name="{{$sale->cliente}}" data-cpfcnpj="{{$sale->cpfcnpj}}"><i class="fa fa-credit-card"></i></button></td>
+                                        @endif
+
                                     </tr>
                                 </tbody>
                                 @endforeach

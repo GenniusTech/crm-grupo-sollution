@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AsaasController;
 use App\Http\Controllers\CpfcnpjController;
 use App\Http\Controllers\CursoLimpaNomeController;
 use App\Http\Controllers\DashController;
@@ -18,7 +19,7 @@ Route::get('/forgot-password', [RegisterController::class, 'register'])->name('r
 Route::post('/forgot-password', [RegisterController::class, 'register_action'])->name('register_action');
 
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::get('/dashboard', [DashController::class, 'dashboard'])->name('dashboard');
     Route::get('/logout', [DashController::class, 'logout'])->name('logout');
 
@@ -35,12 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cadastroCpfCnpj', [CpfcnpjController::class, 'cadastroCpfCnpj'])->name('cadastroCpfCnpj');
 
     Route::get('/cursoLimpaNome',[CursoLimpaNomeController::class, 'cursoLimpaNome'])->name('cursoLimpaNome');
-    
-
-   
 
     Route::get('/perfil',[PerfilController::class, 'perfil'])->name('perfil');
     Route::post('/user/update', [PerfilController::class, 'update'])->name('update');
     Route::post('/perfilimg', [PerfilController::class, 'perfilimg'])->name('perfilimg');
 
-}); 
+});

@@ -12,7 +12,7 @@
         <!-- Cadastrar CPF/CNPJ -->
         <div class="row">
             <div class="col-sm-12 col-lg-12">
-                
+
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -28,7 +28,7 @@
                     {{ Session::get('success') }}
                 </div>
              @endif
-        
+
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div
@@ -51,9 +51,14 @@
                     <div class="card-body">
                         <form id="pesquisa" class="user">
                             <div class="row">
-                                <div class="col-sm-12 col-lg-6 offset-lg-2">
+                                <div class="col-sm-12 col-lg-4 offset-lg-2">
                                     <div class="form-group">
                                         <input type="number" name="cpfcnpj" class="form-control form-control-user" placeholder="CPF/CNPJ">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-2">
+                                    <div class="form-group">
+                                        <input type="date" name="dataNascimento" class="form-control form-control-user">
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-2">

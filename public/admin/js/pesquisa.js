@@ -1,6 +1,17 @@
+function formatarData(data) {
+    var dataObj = new Date(data);
+
+    var dia = dataObj.getUTCDate().toString().padStart(2, '0');
+    var mes = (dataObj.getUTCMonth() + 1).toString().padStart(2, '0');
+    var ano = dataObj.getUTCFullYear().toString();
+
+    return dia + '/' + mes + '/' + ano;
+}
+
 function pesquisaCPFCNPJ(){
     let cpfcnpj = $('input[name=cpfcnpj]').val();
-
+    let dataNascimento = $('input[name=dataNascimento]').val();
+    console.log(dataNascimento);
     if(cpfcnpj.length > 13){
         $.ajax({
             url: "http://ws.hubdodesenvolvedor.com.br/v2/cnpj/?cnpj="+cpfcnpj+"&token=124678250wDRJmrCEXu225102800",
@@ -25,7 +36,7 @@ function pesquisaCPFCNPJ(){
         });
     }else{
         $.ajax({
-            url: "https://ws.hubdodesenvolvedor.com.br/v2/cpf/?cpf="+cpfcnpj+"&data=&token=124678250wDRJmrCEXu225102800",
+            url: "https://ws.hubdodesenvolvedor.com.br/v2/cpf/?cpf="+cpfcnpj+"&data="+formatarData(dataNascimento)+"&token=124678250wDRJmrCEXu225102800",
             method:'GET',
             complete: function(xhr){
 
@@ -47,6 +58,119 @@ function pesquisaCPFCNPJ(){
             }
         });
     }
+}
 
+function geraPagamento(botao){
+    var id = botao.dataset.id;
+    var name = botao.dataset.name;
+    var cpfcnpj = botao.dataset.cpfcnpj;
+
+    var dataAtual = new Date();
+    dataAtual.setDate(dataAtual.getDate() + 3);
+    var dataFormatada = dataAtual.toISOString().split('T')[0];
+
+    var data = {
+        id              : id,
+        name            : name,
+        cpfcnpj         : cpfcnpj,
+        dataFormatada   : dataFormatada
+    };
+
+    $.ajax({
+        url: '/api/geraPagamento',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+
+            var data = {
+                LINK_PAY        : response.json['paymentLink'],
+                STATUS          : 'PENDING_PAY',
+                paymentId       : response.json['paymentId']
+            };
+
+            $.ajax({
+                url: '/api/geraLink/' + id,
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Sucesso!',
+                        text: `${response.message}`,
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#008000',
+                        confirmButtonText: 'OK'
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                      })
+                },
+                error: function(xhr) {
+                    Swal.fire(
+                        'Problemas!',
+                        'Não foi possível gerar essa cobrança, contate o suporte!',
+                        'error'
+                    )
+                }
+            });
+
+        },
+        error: function(xhr) {
+            Swal.fire(
+                'Problemas!',
+                'Não foi possível gerar essa cobrança, contate o suporte!',
+                'error'
+            )
+        }
+    });
 
 }
+
+function geraLink(){
+
+}
+
+function copiaLink(botao){
+    var link = botao.getAttribute('data-link');
+    var tempInput = document.createElement('input');
+    tempInput.value = link;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+
+    Swal.fire(
+        'Sucesso!',
+        'Link de pagamento copiado!',
+        'success'
+    )
+}
+
+// function webhook(){
+
+//     var data = {
+//         id              : 'pay_8341736333218660',
+//         status          : 'PAYMENT_CONFIRMED',
+//     };
+
+//     $.ajax({
+//         url: '/api/webhook',
+//         type: 'POST',
+//         data: data,
+//         dataType: 'json',
+//         success: function(response) {
+//             console.log(response);
+//         },
+//         error: function(xhr) {
+//             Swal.fire(
+//                 'Problemas!',
+//                 'Não foi possível gerar essa cobrança, contate o suporte!',
+//                 'error'
+//             )
+//         }
+//     });
+// }
