@@ -16,14 +16,19 @@ class CpfcnpjController extends Controller
 {
     public function cpfcnpj()
     {
-        $user = auth()->user(); // Supondo que você esteja usando autenticação
+        $users = auth()->user();
 
-        $notfic = Notificacao::where(function ($query) use ($user) {
-            if ($user->profile === 'admin') {
-                $query->where('tipo', '!=', ''); // Todas as notificações
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '') // Todas as notificações
+                        ->orWhere('tipo', 0); // Notificações com tipo igual a 0
+                });
             } else {
-                $query->where('tipo', 0) // Notificações com tipo igual a 0
-                    ->orWhere('tipo', $user->id); // Notificações com tipo igual ao ID do usuário logado
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0) // Notificações com tipo igual a 0
+                        ->orWhere('tipo', $users->id); // Notificações com tipo igual ao ID do usuário logado
+                });
             }
         })->get();
 
