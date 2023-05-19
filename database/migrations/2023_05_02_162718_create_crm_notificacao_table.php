@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('data');
             $table->integer('tipo');
             $table->timestamps();
-        });
+        }); 
     }
 
     /**

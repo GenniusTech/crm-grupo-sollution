@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('status');
             $table->timestamps();
         });
-    }
+    } 
 
     /**
      * Reverse the migrations.
