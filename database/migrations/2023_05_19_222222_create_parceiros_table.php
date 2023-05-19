@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('nome', 255);
             $table->string('descricao', 255);
             $table->string('link', 255);
-            $table->string('linklogo', 16384);
+            $table->text('linklogo', 16384);
             $table->timestamps();
         });
     }

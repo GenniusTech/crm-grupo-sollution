@@ -8,11 +8,13 @@ return new class extends Migration
 {
     public function up()
     {
+        if (!Schema::hasTable('migrations')) {
         Schema::create('migrations', function (Blueprint $table) {
             $table->id();
             $table->string('migration', 255)->collation('utf8mb4_unicode_ci');
             $table->integer('batch');
         });
+    }
     }
 
     /**
