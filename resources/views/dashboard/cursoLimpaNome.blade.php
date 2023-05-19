@@ -33,11 +33,11 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>.</th>
+                                        <th>.</th>
+                                        <th>.</th>
+                                        <th>.</th>
+                                        <th>.</th>
                                     </tr>
                                 </tfoot>
                             </table>

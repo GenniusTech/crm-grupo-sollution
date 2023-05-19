@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CRM - Grupo Sollution</title>
+    <title>CRM - One Positive</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -25,7 +25,7 @@
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-text mx-3">Grupo Sollution</div>
+                <div class="sidebar-brand-text mx-3">One Positive</div>
             </a>
 
             <hr class="sidebar-divider my-0">
@@ -48,7 +48,7 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="https://crm.myonepositivo.com.br/login">Bot WhatsApp</a>
+                        <a class="collapse-item" target="_blank" href="https://crm.myonepositive.com.br/login">Bot WhatsApp</a>
                     </div>
                 </div>
             </li>

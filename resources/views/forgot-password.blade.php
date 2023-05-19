@@ -17,7 +17,7 @@
                             <div class="p-5">
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-2">Primeiro acesso?</h1>
-                                    <p class="mb-4">Crie o seu acesso ao Grupo Sollution!</p>
+                                    <p class="mb-4">Crie o seu acesso ao One Positive!</p>
                                 </div>
                                 @if ($errors->any())
                                 <div style="background-color: rgb(136, 16, 20); color:white; text-align: center; border-radius:5px;">
