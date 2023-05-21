@@ -11,11 +11,13 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    protected $table = 'Users';
+
     use HasApiTokens, HasFactory, Notifiable;
 
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
-    
+
     protected $fillable = [
         'name',
         'email',
@@ -39,11 +41,11 @@ class User extends Authenticatable
         'createdAt' => 'datetime',
     ];
 
-    public function getAuthPassword(){  
+    public function getAuthPassword(){
         return $this->passwordHash;
     }
 
-    public function getUpdatedAt(){  
+    public function getUpdatedAt(){
         return $this->updatedAt;
     }
 
@@ -51,5 +53,5 @@ class User extends Authenticatable
     {
         Schema::dropIfExists('users');
     }
-   
+
 }

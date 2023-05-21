@@ -9,7 +9,7 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $table = 'tickets';
+    protected $table = 'Tickets';
 
     protected $fillable = [
         'status',
@@ -21,7 +21,7 @@ class Ticket extends Model
         'isGroup',
         'unreadMessages',
         'queueId',
-      
+
     ];
 
     protected $hidden = [
@@ -31,5 +31,5 @@ class Ticket extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-   
+
 }
