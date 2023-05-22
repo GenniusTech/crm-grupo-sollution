@@ -34,6 +34,13 @@ class AsaasController extends Controller
                 'value' => $request->input('valor'),
                 'dueDate' => $request->input('dataFormatada'),
                 'description' => 'Limpa Nome',
+                'installmentCount' => 3,
+                'installmentValue' => $request->input('valor') / 3,
+                'split' =>
+                        [
+                            'walletId' => 'afd76f74-6dd8-487b-b251-28205161e1e6',
+                            'fixedValue' => '10',
+                        ]
             ];
             $response = $client->post('https://www.asaas.com/api/v3/payments', $options);
             $body = (string) $response->getBody();
