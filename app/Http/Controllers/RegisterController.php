@@ -17,11 +17,11 @@ class RegisterController extends Controller
     }
 
     public function register_action(Request $request)
-    {   
+    {
         $request->validate([
             'name' => 'required|string|max:255',
             'cpf' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:Users',
             'password' => 'required|string|min:8',
         ]);
 

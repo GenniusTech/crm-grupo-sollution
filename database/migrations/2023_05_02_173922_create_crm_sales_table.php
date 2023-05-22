@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email');
             $table->bigInteger('telefone');
             $table->string('link_pay')->nullable();
-            $table->integer('id_pay')->nullable();
+            $table->string('id_pay')->nullable();
             $table->integer('id_lista');
             $table->binary('file')->nullable();
             $table->timestamps();

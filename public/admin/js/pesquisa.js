@@ -73,40 +73,63 @@ function geraPagamento(botao){
         id              : id,
         name            : name,
         cpfcnpj         : cpfcnpj,
-        dataFormatada   : dataFormatada
+        dataFormatada   : dataFormatada,
     };
 
-    $.ajax({
-        url: '/api/geraPagamento',
-        type: 'POST',
-        data: data,
-        dataType: 'json',
-        success: function(response) {
-
-            var data = {
-                LINK_PAY        : response.json['paymentLink'],
-                STATUS          : 'PENDING_PAY',
-                paymentId       : response.json['paymentId']
-            };
+    Swal.fire({
+        title: 'Qual o valor da venda?',
+        input: 'number',
+        showCancelButton: true,
+        confirmButtonText: 'Gerar',
+        confirmButtonColor: '#008000',
+        showLoaderOnConfirm: true,
+        preConfirm: (value) => {
+            data.valor = value;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
 
             $.ajax({
-                url: '/api/geraLink/' + id,
+                url: '/api/geraPagamento',
                 type: 'POST',
                 data: data,
                 dataType: 'json',
                 success: function(response) {
-                    Swal.fire({
-                        title: 'Sucesso!',
-                        text: `${response.message}`,
-                        icon: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#008000',
-                        confirmButtonText: 'OK'
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
+
+                    var data = {
+                        LINK_PAY        : response.json['paymentLink'],
+                        STATUS          : 'PENDING_PAY',
+                        paymentId       : response.json['paymentId']
+                    };
+
+                    $.ajax({
+                        url: '/api/geraLink/' + id,
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        success: function(response) {
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: `${response.message}`,
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonColor: '#008000',
+                                confirmButtonText: 'OK'
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                              })
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Problemas!',
+                                'Não foi possível gerar essa cobrança, contate o suporte!',
+                                'error'
+                            )
                         }
-                      })
+                    });
+
                 },
                 error: function(xhr) {
                     Swal.fire(
@@ -116,11 +139,9 @@ function geraPagamento(botao){
                     )
                 }
             });
-
-        },
-        error: function(xhr) {
+        } else{
             Swal.fire(
-                'Problemas!',
+                'Operação cancelada!',
                 'Não foi possível gerar essa cobrança, contate o suporte!',
                 'error'
             )

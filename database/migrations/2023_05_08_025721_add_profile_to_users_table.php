@@ -8,18 +8,19 @@ class AddProfileToUsersTable extends Migration
 {
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('Users', function (Blueprint $table) {
             $table->binary('perfil')->nullable();
+            $table->string('cpf', 30)->nullable();
         });
     }
-    
+
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('Users', function (Blueprint $table) {
             $table->dropColumn('perfil');
         });
     }
-    
-    
+
+
 }
 
