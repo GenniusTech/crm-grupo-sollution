@@ -8,24 +8,24 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CRM - Grupo Sollution</title>
+    <title>CRM - AGB</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
 
 </head>
 <body id="page-top">
 
     <div id="wrapper">
 
-        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-text mx-3">Grupo Sollution</div>
+                <div class="sidebar-brand-text mx-3">AGB</div>
             </a>
 
             <hr class="sidebar-divider my-0">
@@ -48,7 +48,7 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="https://crm.myonepositivo.com.br/login">Bot WhatsApp</a>
+                        <a class="collapse-item" target="_blank" href="https://crm.agbinfinitesolutions.com.br/">Bot WhatsApp</a>
                     </div>
                 </div>
             </li>
