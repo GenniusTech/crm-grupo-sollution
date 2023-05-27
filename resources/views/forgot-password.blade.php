@@ -58,6 +58,12 @@
                                         <input type="password" class="form-control form-control-user" name="password" placeholder="Senha">
                                     </div>
                                     <div class="form-group">
+                                        <input type="text" class="form-control form-control-user" name="indicacao" placeholder="Indicação" value="{{ isset($id) ? $id : '' }}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user" name="assas" placeholder="Wallet Assas" required>
+                                    </div>
+                                    <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-user btn-block"> Cadastrar-me </button>
                                     </div>
 

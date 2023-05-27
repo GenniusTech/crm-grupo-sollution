@@ -11,6 +11,9 @@ class AddProfileToUsersTable extends Migration
         Schema::table('Users', function (Blueprint $table) {
             $table->binary('perfil')->nullable();
             $table->string('cpf', 30)->nullable();
+            $table->string('id_wallet', 255)->nullable();
+            $table->string('id_wallet_lider', 255)->nullable();
+            $table->string('codigo', 8)->default('')->unique();
         });
     }
 

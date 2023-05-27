@@ -26,7 +26,10 @@ class User extends Authenticatable
         'updatedAt',
         'cpf',
         'perfil',
-        'profile'
+        'profile',
+        'id_wallet',
+        'id_wallet_lider',
+        'codigo'
 
     ];
 

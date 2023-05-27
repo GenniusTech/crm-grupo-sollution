@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/', [LoginController::class, 'login_action'])->name('login_action');
 
-Route::get('/forgot-password', [RegisterController::class, 'register'])->name('register');
+Route::get('/forgot-password/{id?}', [RegisterController::class, 'register'])->name('register');
 Route::post('/forgot-password', [RegisterController::class, 'register_action'])->name('register_action');
 
 Route::middleware(['auth'])->group(function () {

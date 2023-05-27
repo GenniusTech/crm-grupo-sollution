@@ -21,13 +21,13 @@ class CpfcnpjController extends Controller
         $notfic = Notificacao::where(function ($query) use ($users) {
             if ($users->profile === 'admin') {
                 $query->where(function ($query) {
-                    $query->where('tipo', '!=', '') // Todas as notificações
-                        ->orWhere('tipo', 0); // Notificações com tipo igual a 0
+                    $query->where('tipo', '!=', '')
+                        ->orWhere('tipo', 0);
                 });
             } else {
                 $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0) // Notificações com tipo igual a 0
-                        ->orWhere('tipo', $users->id); // Notificações com tipo igual ao ID do usuário logado
+                    $query->where('tipo', 0)
+                        ->orWhere('tipo', $users->id);
                 });
             }
         })->get();
@@ -51,6 +51,7 @@ class CpfcnpjController extends Controller
             'dataNascimento'=> 'required|string|max:255',
             'email'=> 'required|string|max:255',
             'telefone'=> 'required|string|max:20',
+            'endereco'=> 'string',
             'file' => 'file|max:2048', // 2 MB
         ]);
 
@@ -59,22 +60,24 @@ class CpfcnpjController extends Controller
         $lista = CrmList::where('status', '=', 1)->firstOrFail();
 
         $user = CrmSales::create([
-            'cpfcnpj' => $request->cpfcnpj,
-            'cliente' => $request->cliente,
-            'situacao' => $request->situacao,
-            'dataNascimento' => $dataNascimento,
-            'email' => $request->email,
-            'telefone' => $request->telefone,
-            'id_lista'=> $lista->id,
-            'id_user' => Auth()->user()->id,
-            'status' => 'PENDING',
+            'cpfcnpj'           => $request->cpfcnpj,
+            'cliente'           => $request->cliente,
+            'situacao'          => $request->situacao,
+            'dataNascimento'    => $dataNascimento,
+            'email'             => $request->email,
+            'telefone'          => $request->telefone,
+            'id_lista'          => $lista->id,
+            'endereco'          => $request->cep.' - '.$request->endereco.', '.$request->num,
+            'id_user'           => Auth()->user()->id,
+            'id_wallet'         => Auth()->user()->id_wallet,
+            'id_wallet_lider'   => Auth()->user()->id_wallet_lider,
+            'status'            => 'PENDING',
         ]);
 
         if ($request->hasFile('file')) {
             $path = $request->file('file')->store('public/profiles');
             $url = Storage::url($path);
 
-            // Salva o caminho da imagem no banco de dados
             $user->file = $url;
             $user->save();
         }
@@ -83,7 +86,6 @@ class CpfcnpjController extends Controller
             return redirect()->route('cpfcnpj')->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        // Cadastro bem-sucedido, define a mensagem de sucesso na sessão
         FacadesSession::flash('success', 'Cadastro realizado com sucesso.');
 
         return redirect()->route('dashboard');

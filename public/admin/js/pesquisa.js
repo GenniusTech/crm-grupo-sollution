@@ -11,7 +11,6 @@ function formatarData(data) {
 function pesquisaCPFCNPJ(){
     let cpfcnpj = $('input[name=cpfcnpj]').val();
     let dataNascimento = $('input[name=dataNascimento]').val();
-    console.log(dataNascimento);
     if(cpfcnpj.length > 13){
         $.ajax({
             url: "http://ws.hubdodesenvolvedor.com.br/v2/cnpj/?cnpj="+cpfcnpj+"&token=124678250wDRJmrCEXu225102800",
@@ -61,9 +60,11 @@ function pesquisaCPFCNPJ(){
 }
 
 function geraPagamento(botao){
-    var id = botao.dataset.id;
-    var name = botao.dataset.name;
-    var cpfcnpj = botao.dataset.cpfcnpj;
+    var id              = botao.dataset.id;
+    var name            = botao.dataset.name;
+    var cpfcnpj         = botao.dataset.cpfcnpj;
+    var id_wallet       = botao.dataset.id_wallet;
+    var id_wallet_lider = botao.dataset.id_wallet_lider;
 
     var dataAtual = new Date();
     dataAtual.setDate(dataAtual.getDate() + 3);
@@ -76,60 +77,59 @@ function geraPagamento(botao){
         dataFormatada   : dataFormatada,
     };
 
-    Swal.fire({
-        title: 'Qual o valor da venda?',
-        input: 'number',
-        showCancelButton: true,
-        confirmButtonText: 'Gerar',
-        confirmButtonColor: '#008000',
-        showLoaderOnConfirm: true,
-        preConfirm: (value) => {
-            data.valor = value;
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
+    $.ajax({
+        url: '/api/geraPagamento',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+
+            var data = {
+                LINK_PAY        : response.json['paymentLink'],
+                STATUS          : 'PENDING_PAY',
+                paymentId       : response.json['paymentId'],
+                split: [
+                    {
+                        //TI
+                        walletId: 'afd76f74-6dd8-487b-b251-28205161e1e6',
+                        percentualValue: 1
+                    },
+                    {
+                        //MKT
+                        walletId: 'afd76f74-6dd8-487b-b251-28205161e1e6',
+                        percentualValue: 1
+                    },
+                    {
+                        //Lider
+                        walletId: id_wallet_lider,
+                        percentualValue: 18
+                    },
+                    {
+                        //Vendedor
+                        walletId: id_wallet,
+                        percentualValue: 49
+                    }
+                ]
+            };
 
             $.ajax({
-                url: '/api/geraPagamento',
+                url: '/api/geraLink/' + id,
                 type: 'POST',
                 data: data,
                 dataType: 'json',
                 success: function(response) {
-
-                    var data = {
-                        LINK_PAY        : response.json['paymentLink'],
-                        STATUS          : 'PENDING_PAY',
-                        paymentId       : response.json['paymentId']
-                    };
-
-                    $.ajax({
-                        url: '/api/geraLink/' + id,
-                        type: 'POST',
-                        data: data,
-                        dataType: 'json',
-                        success: function(response) {
-                            Swal.fire({
-                                title: 'Sucesso!',
-                                text: `${response.message}`,
-                                icon: 'success',
-                                showCancelButton: false,
-                                confirmButtonColor: '#008000',
-                                confirmButtonText: 'OK'
-                              }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload();
-                                }
-                              })
-                        },
-                        error: function(xhr) {
-                            Swal.fire(
-                                'Problemas!',
-                                'Não foi possível gerar essa cobrança, contate o suporte!',
-                                'error'
-                            )
+                    Swal.fire({
+                        title: 'Sucesso!',
+                        text: `${response.message}`,
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#008000',
+                        confirmButtonText: 'OK'
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
                         }
-                    });
-
+                      })
                 },
                 error: function(xhr) {
                     Swal.fire(
@@ -139,18 +139,16 @@ function geraPagamento(botao){
                     )
                 }
             });
-        } else{
+
+        },
+        error: function(xhr) {
             Swal.fire(
-                'Operação cancelada!',
+                'Problemas!',
                 'Não foi possível gerar essa cobrança, contate o suporte!',
                 'error'
             )
         }
     });
-
-}
-
-function geraLink(){
 
 }
 
@@ -171,27 +169,21 @@ function copiaLink(botao){
     )
 }
 
-// function webhook(){
+function consultarEndereco() {
+    const cep = document.getElementById('cep').value;
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.erro) {
+          console.log('CEP não encontrado');
+        } else {
+          const cidade = data.localidade + '/' + data.uf;
+          const endereco = `${data.bairro}, ${data.logradouro} - `;
 
-//     var data = {
-//         id              : 'pay_8341736333218660',
-//         status          : 'PAYMENT_CONFIRMED',
-//     };
-
-//     $.ajax({
-//         url: '/api/webhook',
-//         type: 'POST',
-//         data: data,
-//         dataType: 'json',
-//         success: function(response) {
-//             console.log(response);
-//         },
-//         error: function(xhr) {
-//             Swal.fire(
-//                 'Problemas!',
-//                 'Não foi possível gerar essa cobrança, contate o suporte!',
-//                 'error'
-//             )
-//         }
-//     });
-// }
+          // Preencher campos de cidade e endereço
+          document.getElementById('cidade').value = cidade;
+          document.getElementById('endereco').value = endereco;
+        }
+      })
+      .catch(error => console.log(error));
+}

@@ -17,6 +17,9 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+    <!-- PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+
 </head>
 <body id="page-top">
 
@@ -74,6 +77,26 @@
                     </div>
                 </div>
             </li>
+
+            <!--<hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Financeiro
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinancas"
+                    aria-expanded="true" aria-controls="collapseFinancas">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Minhas Finanças</span>
+                </a>
+                <div id="collapseFinancas" class="collapse" aria-labelledby="headingFinancas" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/wallet">Minha Carteira</a>
+                        {{-- <a class="collapse-item" href="/indicacao">Indicação</a> --}}
+                    </div>
+                </div>
+            </li> -->
 
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -192,13 +215,14 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
+    <script src="{{ asset('admin/js/geraPdf.js') }}"></script>
 
 </body>
 

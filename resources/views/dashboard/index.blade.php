@@ -131,7 +131,7 @@
                                         <th>CPF/CNPJ</th>
                                         <th>Situação</th>
                                         <th>Status</th>
-                                        <th class="text-center">Gerar/Copiar link de Pagamento</th>
+                                        <th class="text-center">Link de Pagamento</th>
                                     </tr>
                                 </thead>
                                 @foreach ($sales as  $key =>$sale )
@@ -162,7 +162,7 @@
                                         @if(!empty($sale->link_pay))
                                             <td class="text-center"><button class="btn btn-info" type="button" onclick="copiaLink(this)" data-link="{{$sale->link_pay}}"><i class="fa fa-copy"></i></button></td>
                                         @else
-                                            <td class="text-center"><button class="btn btn-success" type="button" onclick="geraPagamento(this)" data-id="{{$sale->id}}" data-name="{{$sale->cliente}}" data-cpfcnpj="{{$sale->cpfcnpj}}"><i class="fa fa-credit-card"></i></button></td>
+                                            <td class="text-center"><button class="btn btn-success" type="button" onclick="geraPagamento(this)" data-id="{{$sale->id}}" data-name="{{$sale->cliente}}" data-cpfcnpj="{{$sale->cpfcnpj}}" data-id_wallet="{{$sale->id_wallet}}" data-id_wallet_lider="{{$sale->id_wallet_lider}}"><i class="fa fa-credit-card"></i></button></td>
                                         @endif
 
                                     </tr>

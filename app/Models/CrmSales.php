@@ -22,9 +22,12 @@ class CrmSales extends Model
         'id_lista',
         'link_pay',
         'id_pay',
+        'id_wallet_lider',
+        'id_wallet',
+        'endereco',
         'status',
         'file'
-      
+
     ];
 
     protected $hidden = [
