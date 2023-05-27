@@ -129,9 +129,10 @@
                                         <th>N°</th>
                                         <th>Cliente</th>
                                         <th>CPF/CNPJ</th>
-                                        <th>Situação</th>
+                                        <th class="text-center">Link de Pagamento Limpa Nome</th>
                                         <th>Status</th>
-                                        <th class="text-center">Gerar/Copiar link de Pagamento</th>
+                                        <th class="text-center">Link de Pagamento Consulta</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 @foreach ($sales as  $key =>$sale )
@@ -140,8 +141,34 @@
                                         <td>{{  $key + 1 }}</td>
                                         <td>{{  $sale->cliente  }}</td>
                                         <td>{{  $sale->cpfcnpj  }}</td>
-                                        <td>{{  $sale->situacao  }}</td>
                                         <td>
+                                            <!-- Status do Pagamento de status_limpanome -->
+                                            @switch($sale->status)
+                                                @case('PENDING')
+                                                    Pendente
+                                                    @break
+                                                @case('PENDING_PAY')
+                                                    Aguardando pagamento
+                                                    @break
+                                                @case('PAYMENT_RECEIVED')
+                                                    Aprovado
+                                                    @break
+                                                @case('PAYMENT_CONFIRMED')
+                                                    Aprovado
+                                                    @break
+                                                @default
+                                                    Situação não identificada!
+                                            @endswitch
+                                        </td>
+                                        <!-- Trata para gera/copiar link de pagamento -->
+                                        @if(!empty($sale->link_pay))
+                                            <td class="text-center"><button class="btn btn-info" type="button" onclick="copiaLink(this)" data-link="{{$sale->link_pay}}"><i class="fa fa-copy"></i></button></td>
+                                        @else
+                                            <td class="text-center"><button class="btn btn-success" type="button" onclick="geraPagamento(this)" data-id="{{$sale->id}}" data-name="{{$sale->cliente}}" data-cpfcnpj="{{$sale->cpfcnpj}}"><i class="fa fa-credit-card"></i></button></td>
+                                        @endif
+
+                                        <td>
+                                            <!-- Aqui deverá ser Status do Pagamento de status_consulta -->
                                             @switch($sale->status)
                                                 @case('PENDING')
                                                     Pendente
@@ -160,8 +187,10 @@
                                             @endswitch
                                         </td>
                                         @if(!empty($sale->link_pay))
+                                            <!-- Aqui deverá Ter o botão download caso o status seja DISPONIVEL -->
                                             <td class="text-center"><button class="btn btn-info" type="button" onclick="copiaLink(this)" data-link="{{$sale->link_pay}}"><i class="fa fa-copy"></i></button></td>
                                         @else
+                                            <!-- Deixar esse botão pois irei fazer ele gerar o link de pagamento para consulta -->
                                             <td class="text-center"><button class="btn btn-success" type="button" onclick="geraPagamento(this)" data-id="{{$sale->id}}" data-name="{{$sale->cliente}}" data-cpfcnpj="{{$sale->cpfcnpj}}"><i class="fa fa-credit-card"></i></button></td>
                                         @endif
 

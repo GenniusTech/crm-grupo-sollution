@@ -30,8 +30,8 @@ class AsaasController extends Controller
             $customerId = $data['id'];
             $options['json'] = [
                 'customer' => $customerId,
-                'billingType' => 'UNDEFINED',
-                'value' => 997,
+                'billingType' => 'PIX',
+                'value' => 1500,
                 'dueDate' => $request->input('dataFormatada'),
                 'description' => 'Limpa Nome',
             ];

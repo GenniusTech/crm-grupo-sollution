@@ -126,11 +126,6 @@ function geraPagamento(botao){
             )
         }
     });
-
-}
-
-function geraLink(){
-
 }
 
 function copiaLink(botao){
