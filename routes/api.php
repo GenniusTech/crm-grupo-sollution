@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiGeraLinkController;
 use App\Http\Controllers\AsaasController;
+use App\Http\Controllers\ListaExcelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/geraLink/{id}',[ ApiGeraLinkController::class ,'geraLink'])->name('geraLink');
 Route::post('/geraPagamento', [AsaasController::class, 'geraPagamento'])->name('geraLink');
 Route::post('/webhook', [AsaasController::class, 'webhook'])->name('webhook');
+Route::post('listaExcel', [ListaExcelController::class, 'listaExcel'])->name('listaExcel');
+
+
 
