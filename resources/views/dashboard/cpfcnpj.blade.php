@@ -92,9 +92,9 @@
                                     <div class="form-group col-sm-12 col-lg-6">
                                         <input type="number" id="telefone" class="form-control form-control-user" name="telefone" placeholder="Telefone">
                                     </div>
-                                    <div class="form-group col-sm-12 col-lg-12">
+                                    {{-- <div class="form-group col-sm-12 col-lg-12">
                                         <input type="file" style="padding:5px;" class="form-control form-control-user" name="file" required>
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-user btn-block"> Cadastrar </button>

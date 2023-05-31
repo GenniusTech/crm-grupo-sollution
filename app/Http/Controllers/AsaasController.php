@@ -28,20 +28,25 @@ class AsaasController extends Controller
         $data = json_decode($body, true);
         if ($response->getStatusCode() === 200) {
             $customerId = $data['id'];
-            $options['json'] = [
-                'customer' => $customerId,
-                'billingType' => 'UNDEFINED',
-                'value' => $request->input('valor'),
-                'dueDate' => $request->input('dataFormatada'),
-                'description' => 'Limpa Nome',
-                'installmentCount' => 3,
-                'installmentValue' => $request->input('valor') / 3,
-                'split' =>
-                        [
-                            'walletId' => 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                            'fixedValue' => '10',
-                        ]
-            ];
+            if($request->input('opcaoParcelas') > 1){
+                $options['json'] = [
+                    'customer' => $customerId,
+                    'billingType' => $request->input('opcaoPagamento'),
+                    'value' => 997,
+                    'dueDate' => $request->input('dataFormatada'),
+                    'description' => 'Limpa Nome',
+                    'installmentCount' => $request->input('opcaoParcelas'),
+                    'installmentValue' => $request->input('valor') / $request->input('opcaoParcelas') ,
+                ];
+            }else{
+                $options['json'] = [
+                    'customer' => $customerId,
+                    'billingType' => $request->input('opcaoPagamento'),
+                    'value' => 997,
+                    'dueDate' => $request->input('dataFormatada'),
+                    'description' => 'Limpa Nome',
+                ];
+            }
             $response = $client->post('https://www.asaas.com/api/v3/payments', $options);
             $body = (string) $response->getBody();
             $data = json_decode($body, true);

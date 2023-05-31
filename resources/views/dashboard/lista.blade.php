@@ -71,7 +71,7 @@
 
                                                 <option value="{{ $userslist->id }}">{{ $userslist->name }}</option>
                                                 @endforeach
-                                                
+
                                             </select>
                                         </div>
                                         <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
@@ -121,9 +121,9 @@
                                         <th>{{ $key + 1 }}</th>
                                         <th>{{ $list->titulo }}</th>
                                         <th>{{ $list->dataInicial }} <br> {{ $list->dataFinal }}</th>
-                                        <th class="text-center"><a href="{{ route('sales.export', ['id_lista' => $list->id]) }}" ><button class="btn btn-primary"><i class="fa fa-credit-card text-light"></i></button></a></th>
+                                        <th class="text-center"><button onclick="geraExcel(this)" data-id="{{ $list->id }}" data-user="{{ Auth::user()->id }}" class="btn btn-success"><i class="fa fa-credit-card text-light"></i></button></th>
                                         <th class="text-center"><button class="btn btn-primary"><i class="fa fa-file text-light"></i></button></th>
-                                       
+
                                         <th class="text-center">
                                             @if (Auth::user()->profile === 'admin')
                                             <form action="{{ route('ativar-lista', $list->id) }}" method="POST">
@@ -134,7 +134,7 @@
                                             </form>
                                             @endif
                                         </th>
-                                        
+
                                     </tr>
                                     @endforeach
                                 </tfoot>

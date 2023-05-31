@@ -61,97 +61,115 @@ function pesquisaCPFCNPJ(){
 }
 
 function geraPagamento(botao){
-    var id = botao.dataset.id;
-    var name = botao.dataset.name;
-    var cpfcnpj = botao.dataset.cpfcnpj;
-
-    var dataAtual = new Date();
-    dataAtual.setDate(dataAtual.getDate() + 3);
-    var dataFormatada = dataAtual.toISOString().split('T')[0];
-
-    var data = {
-        id              : id,
-        name            : name,
-        cpfcnpj         : cpfcnpj,
-        dataFormatada   : dataFormatada,
-    };
 
     Swal.fire({
-        title: 'Qual o valor da venda?',
-        input: 'number',
+        title: 'Opções de Pagamento',
+        html:
+          '<div class="row w-100">' +
+          '  <div class="col-6">' +
+          '    <select id="opcaoPagamento" class="form-control">' +
+          '      <option value="PIX">Pix</option>' +
+          '      <option value="CREDIT_CARD">Cartão</option>' +
+          '    </select>' +
+          '  </div>' +
+          '  <div class="col-6">' +
+          '    <select id="opcaoParcelas" class="form-control">' +
+          '      <option value="1">1x</option>' +
+          '      <option value="2">2x</option>' +
+          '      <option value="3">3x</option>' +
+          '    </select>' +
+          '  </div>' +
+          '</div>',
         showCancelButton: true,
-        confirmButtonText: 'Gerar',
+        showConfirmButton: true,
+        confirmButtonText: 'Confirmar',
         confirmButtonColor: '#008000',
-        showLoaderOnConfirm: true,
-        preConfirm: (value) => {
-            data.valor = value;
-        }
-    }).then((result) => {
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#ff0000',
+        allowOutsideClick: false,
+        focusConfirm: false,
+      }).then((result) => {
         if (result.isConfirmed) {
 
-            $.ajax({
-                url: '/api/geraPagamento',
-                type: 'POST',
-                data: data,
-                dataType: 'json',
-                success: function(response) {
+            var dataAtual = new Date();
+            dataAtual.setDate(dataAtual.getDate() + 3);
+            var dataFormatada = dataAtual.toISOString().split('T')[0];
 
-                    var data = {
-                        LINK_PAY        : response.json['paymentLink'],
-                        STATUS          : 'PENDING_PAY',
-                        paymentId       : response.json['paymentId']
-                    };
+            var data = {
+                id              : botao.dataset.id,
+                name            : botao.dataset.name,
+                cpfcnpj         : botao.dataset.cpfcnpj,
+                dataFormatada   : dataFormatada,
+                opcaoPagamento  : document.getElementById('opcaoPagamento').value,
+                opcaoParcelas   : document.getElementById('opcaoParcelas').value
+            };
 
-                    $.ajax({
-                        url: '/api/geraLink/' + id,
-                        type: 'POST',
-                        data: data,
-                        dataType: 'json',
-                        success: function(response) {
-                            Swal.fire({
-                                title: 'Sucesso!',
-                                text: `${response.message}`,
-                                icon: 'success',
-                                showCancelButton: false,
-                                confirmButtonColor: '#008000',
-                                confirmButtonText: 'OK'
-                              }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload();
-                                }
-                              })
-                        },
-                        error: function(xhr) {
-                            Swal.fire(
-                                'Problemas!',
-                                'Não foi possível gerar essa cobrança, contate o suporte!',
-                                'error'
-                            )
-                        }
-                    });
+            if(data.opcaoPagamento == 'PIX' && data.opcaoParcelas > 1){
+                Swal.fire(
+                    'Atenão!',
+                    'A opção PIX apenas permite pagamentos em 1x!',
+                    'warning'
+                )
+            }else{
+                $.ajax({
+                    url: '/api/geraPagamento',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function(response) {
 
-                },
-                error: function(xhr) {
-                    Swal.fire(
-                        'Problemas!',
-                        'Não foi possível gerar essa cobrança, contate o suporte!',
-                        'error'
-                    )
-                }
-            });
-        } else{
+                        var params = {
+                            LINK_PAY        : response.json['paymentLink'],
+                            STATUS          : 'PENDING_PAY',
+                            paymentId       : response.json['paymentId']
+                        };
+
+                        $.ajax({
+                            url: '/api/geraLink/' + data.id,
+                            type: 'POST',
+                            data: params,
+                            dataType: 'json',
+                            success: function(response) {
+                                Swal.fire({
+                                    title: 'Sucesso!',
+                                    text: `${response.message}`,
+                                    icon: 'success',
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#008000',
+                                    confirmButtonText: 'OK'
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                  })
+                            },
+                            error: function(xhr) {
+                                Swal.fire(
+                                    'Problemas!',
+                                    'Não foi possível gerar essa cobrança, contate o suporte!',
+                                    'error'
+                                )
+                            }
+                        });
+
+                    },
+                    error: function(xhr) {
+                        Swal.fire(
+                            'Problemas!',
+                            'Não foi possível gerar essa cobrança, contate o suporte!',
+                            'error'
+                        )
+                    }
+                });
+            }
+        }else{
             Swal.fire(
-                'Operação cancelada!',
-                'Não foi possível gerar essa cobrança, contate o suporte!',
+                'Cancelado!',
+                'Operação cancelada pelo usuário!',
                 'error'
             )
         }
     });
-
-}
-
-function geraLink(){
-
 }
 
 function copiaLink(botao){
@@ -171,27 +189,43 @@ function copiaLink(botao){
     )
 }
 
-// function webhook(){
+function geraExcel(botao){
 
-//     var data = {
-//         id              : 'pay_8341736333218660',
-//         status          : 'PAYMENT_CONFIRMED',
-//     };
+    var data = {
+        id_lista : botao.dataset.id,
+        id_user  : botao.dataset.user,
+    };
 
-//     $.ajax({
-//         url: '/api/webhook',
-//         type: 'POST',
-//         data: data,
-//         dataType: 'json',
-//         success: function(response) {
-//             console.log(response);
-//         },
-//         error: function(xhr) {
-//             Swal.fire(
-//                 'Problemas!',
-//                 'Não foi possível gerar essa cobrança, contate o suporte!',
-//                 'error'
-//             )
-//         }
-//     });
-// }
+    $.ajax({
+        url: '/api/listaExcel',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            console.log(response);
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.json_to_sheet(response);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Planilha');
+            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            saveAsExcelFile(excelBuffer, 'arquivo.xlsx');
+        },
+        error: function(xhr) {
+            Swal.fire(
+                'Problemas!',
+                'Não foi possível gerar operação, contate o suporte!',
+                'error'
+            )
+        }
+    });
+
+}
+
+function saveAsExcelFile(buffer, fileName) {
+    const data = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = window.URL.createObjectURL(data);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  }
+

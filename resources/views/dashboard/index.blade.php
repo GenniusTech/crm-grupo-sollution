@@ -204,7 +204,6 @@
                                         <th>N°</th>
                                         <th>Colaborador</th>
                                         <th>Acesso</th>
-                                        <th class="text-center">Vendas</th>
                                     </tr>
                                 </thead>
                                 @foreach ($users as $user)
@@ -213,7 +212,6 @@
                                         <th>{{ $user->id }}</th>
                                         <th>{{ $user->name }}</th>
                                         <th>{{ $user->profile }}</th>
-                                        <th class="text-center"><a onclick="geraPlanilha()"><i class="fa fa-download text-primary"></i></a></th>
                                     </tr>
                                 </tfoot>
                                 @endforeach
