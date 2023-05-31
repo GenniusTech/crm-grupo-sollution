@@ -74,3 +74,11 @@ function criarFichaAssociativa() {
         doc.save(`Ficha Associativa ${nome}.pdf`);
     }
 }
+
+function criarContrato() {
+    Swal.fire(
+        'Em breve!',
+        'Função não disponivel!',
+        'warning'
+    )
+}

@@ -51,7 +51,7 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="https://crm.myonepositivo.com.br/login">Bot WhatsApp</a>
+                        <a class="collapse-item" target="_blank" href="https://crm.gruposollution.com.br/login">Bot WhatsApp</a>
                     </div>
                 </div>
             </li>
@@ -72,7 +72,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/lista">Listas</a>
                         <a class="collapse-item" href="/cpfcnpj">Cadastrar CPF/CNPJ</a>
-                        <!--<a class="collapse-item" href="">Forúm</a>-->
+                        <a class="collapse-item" onclick="geraIndicacao('{{  Auth::user()->codigo}}')">Indicação</a>
                         <a class="collapse-item" href="/cursoLimpaNome">Curso</a>
                     </div>
                 </div>

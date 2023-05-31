@@ -60,76 +60,93 @@ function pesquisaCPFCNPJ(){
 }
 
 function geraPagamento(botao){
-    var id              = botao.dataset.id;
-    var name            = botao.dataset.name;
-    var cpfcnpj         = botao.dataset.cpfcnpj;
-    var id_wallet       = botao.dataset.id_wallet;
-    var id_wallet_lider = botao.dataset.id_wallet_lider;
 
-    var dataAtual = new Date();
-    dataAtual.setDate(dataAtual.getDate() + 3);
-    var dataFormatada = dataAtual.toISOString().split('T')[0];
+    Swal.fire({
+        title: 'Opções de Pagamento',
+        html:
+          '<div class="row w-100">' +
+          '  <div class="col-6">' +
+          '    <select id="opcaoPagamento" class="form-control">' +
+          '      <option value="PIX">Pix</option>' +
+          '      <option value="BOLETO">Boleto</option>' +
+          '      <option value="CREDIT_CARD">Cartão</option>' +
+          '    </select>' +
+          '  </div>' +
+          '  <div class="col-6">' +
+          '    <select id="opcaoParcelas" class="form-control">' +
+          '      <option value="1">1x</option>' +
+          '      <option value="2">2x</option>' +
+          '      <option value="3">3x</option>' +
+          '    </select>' +
+          '  </div>' +
+          '</div>',
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Confirmar',
+        confirmButtonColor: '#008000',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#ff0000',
+        allowOutsideClick: false,
+        focusConfirm: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
 
-    var data = {
-        id              : id,
-        name            : name,
-        cpfcnpj         : cpfcnpj,
-        dataFormatada   : dataFormatada,
-    };
-
-    $.ajax({
-        url: '/api/geraPagamento',
-        type: 'POST',
-        data: data,
-        dataType: 'json',
-        success: function(response) {
+            var dataAtual = new Date();
+            dataAtual.setDate(dataAtual.getDate() + 3);
+            var dataFormatada = dataAtual.toISOString().split('T')[0];
 
             var data = {
-                LINK_PAY        : response.json['paymentLink'],
-                STATUS          : 'PENDING_PAY',
-                paymentId       : response.json['paymentId'],
-                split: [
-                    {
-                        //TI
-                        walletId: 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                        percentualValue: 1
-                    },
-                    {
-                        //MKT
-                        walletId: 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                        percentualValue: 1
-                    },
-                    {
-                        //Lider
-                        walletId: id_wallet_lider,
-                        percentualValue: 18
-                    },
-                    {
-                        //Vendedor
-                        walletId: id_wallet,
-                        percentualValue: 49
-                    }
-                ]
+                id              : botao.dataset.id,
+                name            : botao.dataset.name,
+                cpfcnpj         : botao.dataset.cpfcnpj,
+                dataFormatada   : dataFormatada,
+                id_wallet       : botao.dataset.id_wallet,
+                id_wallet_lider : botao.dataset.id_wallet_lider,
+                opcaoPagamento  : document.getElementById('opcaoPagamento').value,
+                opcaoParcelas   : document.getElementById('opcaoParcelas').value
             };
 
             $.ajax({
-                url: '/api/geraLink/' + id,
+                url: '/api/geraPagamento',
                 type: 'POST',
                 data: data,
                 dataType: 'json',
                 success: function(response) {
-                    Swal.fire({
-                        title: 'Sucesso!',
-                        text: `${response.message}`,
-                        icon: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#008000',
-                        confirmButtonText: 'OK'
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
+
+                    var data = {
+                        LINK_PAY        : response.json['paymentLink'],
+                        STATUS          : 'PENDING_PAY',
+                        paymentId       : response.json['paymentId'],
+                    };
+
+                    $.ajax({
+                        url: '/api/geraLink/' + id,
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        success: function(response) {
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: `${response.message}`,
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonColor: '#008000',
+                                confirmButtonText: 'OK'
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                              })
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Problemas!',
+                                'Não foi possível gerar essa cobrança, contate o suporte!',
+                                'error'
+                            )
                         }
-                      })
+                    });
+
                 },
                 error: function(xhr) {
                     Swal.fire(
@@ -139,17 +156,14 @@ function geraPagamento(botao){
                     )
                 }
             });
-
-        },
-        error: function(xhr) {
+        }else{
             Swal.fire(
-                'Problemas!',
-                'Não foi possível gerar essa cobrança, contate o suporte!',
+                'Cancelado!',
+                'Operação cancelada pelo usuário!',
                 'error'
             )
         }
     });
-
 }
 
 function copiaLink(botao){
@@ -164,7 +178,7 @@ function copiaLink(botao){
 
     Swal.fire(
         'Sucesso!',
-        'Link de pagamento copiado!',
+        'Link copiado!',
         'success'
     )
 }
@@ -186,4 +200,19 @@ function consultarEndereco() {
         }
       })
       .catch(error => console.log(error));
+}
+
+function geraIndicacao(codigo) {
+    Swal.fire({
+      title: 'Compartilhe com sua Equipe!',
+      html:
+        `<div class="row w-100">` +
+            `<div class="col-sm-12 col-lg-9 mt-2"> <input class="form-control form-control-user" id="meuInput" type="text" value="${codigo}" disabled> </div>` +
+            `<div class="col-sm-12 col-lg-3 mt-2"> <button class="btn btn-success" onclick="copiaLink(this)" data-link="https://gestao.gruposollution.com.br/forgot-password/${codigo}">Copiar</button></div>` +
+        `</div>`,
+      showCancelButton: false,
+      showConfirmButton: false,
+      confirmButtonColor: '#008000',
+      icon: 'success'
+    });
 }

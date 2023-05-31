@@ -4,7 +4,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Curso: XXXXXXXX</h1>
+            <h1 class="h3 mb-0 text-gray-800">Curso: Limpa Nome</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     class="fas fa-exclamation-triangle fa-sm text-white-50"></i> Suporte</a>
         </div>
@@ -31,15 +31,6 @@
                                         <th>Assistir</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
 

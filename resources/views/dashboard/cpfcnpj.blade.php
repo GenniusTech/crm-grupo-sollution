@@ -42,7 +42,7 @@
                                 aria-labelledby="dropdownMenuLink">
                                 <div class="dropdown-header">Opções:</div>
                                 <a class="dropdown-item" onclick="criarFichaAssociativa()" href="#">Gerar Ficha Associativa</a>
-                                <a class="dropdown-item" href="#">Gerar Contrato</a>
+                                <a class="dropdown-item" onclick="criarContrato()" href="#">Gerar Contrato</a>
                             </div>
                         </div>
                     </div>
