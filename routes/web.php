@@ -22,17 +22,22 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [DashController::class, 'dashboard'])->name('dashboard');
     Route::get('/logout', [DashController::class, 'logout'])->name('logout');
+    Route::post('/download/{id}', [DashController::class, 'downloadArquivo'])->name('download.arquivo');
+
 
     Route::get('/lista', [ListController::class, 'list'])->name('list');
     Route::post('/cadastroList', [ListController::class, 'cadastroList'])->name('cadastroList');
     Route::post('/ativar-lista/{id}', [ListController::class,'ativarLista'])->name('ativar-lista');
     Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
+    Route::post('/GerarConsultas{id}', [ListController::class, 'GerarConsultas'])->name('GerarConsultas');
+
     Route::get('/sales/export/{id_lista}',[ListController::class, 'export'])->name('sales.export');
 
 
     Route::post('/cadastroNotficacao', [NotificacaoController::class, 'cadastroNotficacao'])->name('cadastroNotficacao');
 
     Route::get('/cpfcnpj', [CpfcnpjController::class, 'cpfcnpj'])->name('cpfcnpj');
+    Route::get('/consulta_gratis', [CpfcnpjController::class, 'consulta_gratis'])->name('consulta_gratis');
     Route::post('/cadastroCpfCnpj', [CpfcnpjController::class, 'cadastroCpfCnpj'])->name('cadastroCpfCnpj');
 
     Route::get('/cursoLimpaNome',[CursoLimpaNomeController::class, 'cursoLimpaNome'])->name('cursoLimpaNome');

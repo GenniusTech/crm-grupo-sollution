@@ -28,13 +28,12 @@
                                     </ul>
                                 </div>
                                 @endif
-                                <form class="user d-none">
-
+                                <form id="busca" class="user">
                                     <div class="form-group">
-                                        <input type="number" class="form-control form-control-user"  placeholder="CPF">
+                                        <input type="number" class="form-control form-control-user" name="cpf_busca" placeholder="CPF do usuário da One Clube">
                                     </div>
                                     <div class="form-group">
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block"> Buscar </a>
+                                        <button type="button" onclick="pesquisaOneClube()" class="btn btn-primary btn-user btn-block"> Buscar </button>
                                     </div>
 
                                     <div id="cadastro" class="d-none">
@@ -43,13 +42,13 @@
                                         </div>
                                     </div>
                                 </form>
-                                <form class="user" method="POST" action="{{ route('register_action') }}">
+                                <form id="registrer" class="user d-none" method="POST" action="{{ route('register_action') }}">
                                     <input type="hidden" value={{  csrf_token() }} name="_token">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" name="name" placeholder="Nome">
+                                        <input type="text" class="form-control form-control-user" name="name" placeholder="Nome" readonly>
                                     </div>
                                     <div class="form-group">
-                                        <input type="number" class="form-control form-control-user" name="cpf" placeholder="CPF">
+                                        <input type="number" class="form-control form-control-user" name="cpf" placeholder="CPF" readonly>
                                     </div>
                                     <div class="form-group">
                                         <input type="email" class="form-control form-control-user" name="email" placeholder="Email">

@@ -42,6 +42,34 @@ class CpfcnpjController extends Controller
         return view('dashboard.cpfcnpj', ['notfic' => $notfic, 'listaAtiva' => $listaAtiva]);
     }
 
+    public function consulta_gratis()
+    {
+        $users = auth()->user();
+
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '') // Todas as notificações
+                        ->orWhere('tipo', 0); // Notificações com tipo igual a 0
+                });
+            } else {
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0) // Notificações com tipo igual a 0
+                        ->orWhere('tipo', $users->id); // Notificações com tipo igual ao ID do usuário logado
+                });
+            }
+        })->get();
+
+        $listaAtiva = CrmList::where('status', '=', 1)->first();
+
+        if (!$listaAtiva) {
+            return redirect()->route('list')->with('mensagem', 'A lista ativa não foi encontrada. Por favor, cadastre ou ative uma lista.');
+        }
+
+
+        return view('dashboard.consulta_gratis', ['notfic' => $notfic, 'listaAtiva' => $listaAtiva, 'user' => $users]);
+    }
+
     public function cadastroCpfCnpj(Request $request)
     {
         $request->validate([
@@ -51,7 +79,6 @@ class CpfcnpjController extends Controller
             'dataNascimento'=> 'required|string|max:255',
             'email'=> 'required|string|max:255',
             'telefone'=> 'required|string|max:20',
-            'file' => 'file|max:2048', // 2 MB
         ]);
 
         $dataNascimento = Carbon::createFromFormat('d/m/Y', $request->dataNascimento)->format('Y-m-d');
@@ -67,7 +94,8 @@ class CpfcnpjController extends Controller
             'telefone' => $request->telefone,
             'id_lista'=> $lista->id,
             'id_user' => Auth()->user()->id,
-            'status' => 'PENDING',
+            'status_consulta' => 'PENDING',
+            'status_limpanome' => 'PENDING',
         ]);
 
         if ($request->hasFile('file')) {

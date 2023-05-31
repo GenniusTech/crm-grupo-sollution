@@ -2,14 +2,11 @@
     @section('conteudo')
     <div class="container-fluid">
 
-        <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Cadastado de Cliente</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-exclamation-triangle fa-sm text-white-50"></i> Suporte</a>
+            <h1 class="h3 mb-0 text-gray-800">Cadastro de cliente: Consulta Gratuita!</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-exclamation-triangle fa-sm text-white-50"></i> Suporte</a>
         </div>
 
-        <!-- Cadastrar CPF/CNPJ -->
         <div class="row">
             <div class="col-sm-12 col-lg-12">
 
@@ -69,11 +66,11 @@
                             </div>
                         </form>
 
-                        <form id="cadastro" class="user d-none"method="POST"  enctype="multipart/form-data" action="{{ route('cadastroCpfCnpj') }}">
+                        <form id="cadastro" class="user d-none"method="POST" >
                             <input type="hidden" value={{  csrf_token() }} name="_token">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-8 offset-lg-2 row">
-
+                                    <input type="hidden" value="{{$user->id}}" name="id_user">
                                     <div class="form-group col-sm-12 col-lg-4">
                                         <input type="number" id="cpfcnpj" class="form-control form-control-user" name="cpfcnpj" placeholder="CPF/CNPJ" readonly>
                                     </div>
@@ -92,15 +89,11 @@
                                     <div class="form-group col-sm-12 col-lg-6">
                                         <input type="number" id="telefone" class="form-control form-control-user" name="telefone" placeholder="Telefone">
                                     </div>
-                                    {{-- <div class="form-group col-sm-12 col-lg-12">
-                                        <input type="file" style="padding:5px;" class="form-control form-control-user" name="file" required>
-                                    </div> --}}
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-user btn-block"> Cadastrar </button>
+                                            <button type="button" onclick="consultaGratis()" class="btn btn-primary btn-user btn-block"> Cadastrar </button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </form>

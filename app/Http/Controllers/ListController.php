@@ -8,9 +8,12 @@ use App\Models\Notificacao;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Exports\SalesExport;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Maatwebsite\Excel\Facades\Excel;
 use SebastianBergmann\Exporter\Exporter;
+use Illuminate\Support\Facades\Session as FacadesSession;
+
 
 class ListController extends Controller
 {
@@ -35,12 +38,18 @@ class ListController extends Controller
 
         $lists = CrmList::all();
 
+        $sales = CrmSales::where('status_consulta', 'PAYMENT_RECEIVED')
+        ->orWhere('status_consulta', 'PAYMENT_CONFIRMED')
+        ->get();
+
+
         $userlist = User::orderBy('name')->get();
 
         return view('dashboard.lista', [
             'lists' => $lists,
             'notfic' => $notfic,
             'userlist' => $userlist,
+            'sales' =>$sales,
         ]);
     }
 
@@ -83,28 +92,41 @@ class ListController extends Controller
         return redirect()->back();
     }
 
-    // public function export($id_lista)
-    // {
-    // // Obter o status da lista correspondente
-    // $list = CrmList::find($id_lista);
-    // $status = $list->confirmed_status;
+     public function GerarConsultas(Request $request, $id)
+    {
 
-    // // Verificar o status da lista e definir a consulta adequada
-    // if ($status == 1) {
-    //     $sales = CrmSales::where('id_lista', $id_lista)->get();
-    // } else {
-    //     $user_id = auth()->user()->id;
-    //     $sales = CrmSales::where('id_lista', $id_lista)
-    //                       ->where('id_user', $user_id)
-    //                       ->get();
-    // }
+        $request->validate([
+            'file' => 'file|max:2048', // 2 MB
+        ]);
 
-    // // Exportar os dados para o Excel
-    // return Excel::download(new Exporter($sales), 'sales.xlsx');
-    // }
+        $user = CrmSales::find($id);
+
+        if (!$user) {
+            return redirect()->route('list')->withErrors(['Registro não encontrado.']);
+        }
+
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('public/profiles');
+            $url = Storage::url($path);
+
+            // Atualiza o campo 'file_consulta' com o novo documento
+            $user->file_consulta = $url;
+            $user->status_consulta = 'DISPONIVEL';
+            $user->save();
+
+        }
+
+        $users = User::where('id',$user->id_user);
+        // Incrementa o campo 'consulta_m' em 1
+        $users->increment('consulta_m');
 
 
 
+        // Cadastro bem-sucedido, define a mensagem de sucesso na sessão
+        FacadesSession::flash('success', 'Cadastro realizado com sucesso.');
 
-  
+
+        return redirect()->route('list');
+
+    }
 }

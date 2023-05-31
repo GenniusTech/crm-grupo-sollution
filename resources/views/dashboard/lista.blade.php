@@ -8,7 +8,21 @@
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     class="fas fa-exclamation-triangle fa-sm text-white-50"></i> Suporte</a>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
+@if(Session::has('success'))
+    <div class="alert alert-success">
+        {{ Session::get('success') }}
+    </div>
+ @endif
         <div class="row">
             @if (Auth::user()->profile === 'admin')
             <!-- /start Administrador -->
@@ -88,7 +102,7 @@
                 </div>
             </div>
             <!-- /end administrador -->
-
+            @if (Auth::user()->consulta_p === '1')
             <div class="col-sm-12 col-lg-12">
                 <div class="card shadow mb-4">
                     <a href="#collapseCardConsulta" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
@@ -109,13 +123,45 @@
                                         </tr>
                                     </thead>
                                     <tfoot>
-                                        @foreach ($lists as $key => $list)
+                                        @foreach ($sales as $key => $sale)
                                         <tr>
                                             <th>{{ $key + 1 }}</th>
-                                            <th>{{ $list->titulo }}</th>
-                                            <th>{{ $list->dataInicial }} <br> {{ $list->dataFinal }}</th>
+                                            <th>{{ $sale->cliente }}</th>
+                                            <th>{{ $sale->cpfcnpj }}</th>    <!--$sale->id-->
                                             <th class="text-center">
-                                                <button class="btn btn-success" type="button" data-toggle="modal" data-target="#logoutModal"><i class="fa fa-file"></i></button>
+                                                <button value="{{ $sale->id }}" class="btn btn-success" type="button" data-toggle="modal" data-target="#logoutModal{{ $sale->id }}">
+                                                    <i class="fa fa-file"></i>
+                                                </button>
+
+                                                <div class="modal fade" id="logoutModal{{ $sale->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Realizar consulta.</h5>
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <form class="user" method="POST"  enctype="multipart/form-data" action="{{ route('GerarConsultas',['id'=> $sale->id]) }}">
+                                                                <input type="hidden" value={{  csrf_token() }} name="_token">
+                                                            <div class="modal-body">
+                                                                <p>Anexe ao Input abaixo o PDF da Consulta</p>
+                                                                    <div class="form-group">
+                                                                        <input type="file" class="form-control form-control-user" name="file" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <p class="text-danger">Atente-se para realizar a consulta corretamente!</p>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+                                                                <button class="btn btn-success" type="submit">Solicitar</button>
+                                                            </div>
+                                                        </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </th>
                                         </tr>
                                         @endforeach
@@ -127,34 +173,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Realizar consulta.</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Anexe ao Input abaixo o PDF da Consulta</p>
-                            <form class="user" action="">
-                                <div class="form-group">
-                                    <input type="file" class="form-control form-control-user" name="consulta">
-                                </div>
-                                <div class="form-group">
-                                    <p class="text-danger">Atente-se para realizar a consulta corretamente!</p>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
-                            <a class="btn btn-success" href="login.html">Solicitar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
 
             @endif
             <div class="col-sm-12 col-lg-12">

@@ -55,6 +55,51 @@ class AsaasController extends Controller
         }
     }
 
+    public function geraPagamentoConsulta(Request $request)
+    {
+        $client = new Client();
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'access_token' => env('API_TOKEN'),
+            ],
+            'json' => [
+                'name'      => $request->input('name'),
+                'cpfCnpj'   => $request->input('cpfcnpj'),
+            ],
+        ];
+        $response = $client->post('https://www.asaas.com/api/v3/customers', $options);
+        $body = (string) $response->getBody();
+        $data = json_decode($body, true);
+        if ($response->getStatusCode() === 200) {
+            $customerId = $data['id'];
+            $options['json'] = [
+                'customer' => $customerId,
+                'billingType' => 'PIX',
+                'value' => 29.99,
+                'dueDate' => $request->input('dataFormatada'),
+                'description' => 'Consulta CPF/CNPJ',
+            ];
+            $response = $client->post('https://www.asaas.com/api/v3/payments', $options);
+            $body = (string) $response->getBody();
+            $data = json_decode($body, true);
+            if ($response->getStatusCode() === 200) {
+
+                $dados['json'] = [
+                    'paymentId'     => $data['id'],
+                    'customer'      => $data['customer'],
+                    'paymentLink'   => $data['invoiceUrl'],
+                ];
+
+                return $dados;
+            } else {
+                return "Erro!";
+            }
+        } else {
+            return "Erro!";
+        }
+    }
+
     public function webhook(Request $request)
     {
         $data = $request->json();

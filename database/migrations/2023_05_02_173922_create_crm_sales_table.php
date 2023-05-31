@@ -14,17 +14,20 @@ return new class extends Migration
         Schema::create('crm_sales', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_user');
-            $table->string('status');
             $table->string('cpfcnpj');
             $table->string('cliente');
             $table->string('situacao');
             $table->date('dataNascimento');
             $table->string('email');
             $table->bigInteger('telefone');
-            $table->string('link_pay')->nullable();
-            $table->integer('id_pay')->nullable();
+            $table->string('status_limpanome')->nullable();
+            $table->string('status_consulta')->nullable();
+            $table->string('link_pay_limpanome')->nullable();
+            $table->string('link_pay_consulta')->nullable();
+            $table->string('id_pay_limpanome')->nullable();
+            $table->string('id_pay_consulta')->nullable();
             $table->integer('id_lista');
-            $table->binary('file')->nullable();
+            $table->binary('file_consulta')->nullable();
             $table->timestamps();
         });
     }

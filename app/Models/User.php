@@ -27,7 +27,10 @@ class User extends Authenticatable
         'updatedAt',
         'cpf',
         'perfil',
-        'profile'
+        'profile',
+        'consulta_g',
+        'consulta_m',
+        'consulta_p'
 
     ];
 

@@ -69,7 +69,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/lista">Listas</a>
                         <a class="collapse-item" href="/cpfcnpj">Cadastrar CPF/CNPJ</a>
-                        <!--<a class="collapse-item" href="">Forúm</a>-->
+                        @if (Auth::user()->consulta_g == 1)
+                            <a class="collapse-item" href="/consulta_gratis">Minha Consulta Grátis</a>
+                        @endif
                         <a class="collapse-item" href="/cursoLimpaNome">Curso</a>
                     </div>
                 </div>

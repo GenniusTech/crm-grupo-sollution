@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DashController extends Controller
 {
@@ -29,11 +30,11 @@ class DashController extends Controller
                 });
             }
         })->get();
-        
-        
+
+
 
         $user = Auth::user();
-        $query = CrmSales::where('status', 'CONFIRMED');
+        $query = CrmSales::where('status_limpanome', 'CONFIRMED');
 
         if ($user->profile !== 'admin') {
             $query->where('id_user', $user->id);
@@ -51,18 +52,18 @@ class DashController extends Controller
         }
         $count = $tickets->count();
         $percent = ($count * 10 <= 100) ? $count * 10 : 100;
-        
+
         $sales = CrmSales::where('id_user', $user->id)
         ->whereHas('list', function($query) {
             $query->where('status', 1);
-        }) 
+        })
         ->get();
 
         $users = User::orderBy('name')->get();
 
         $listname = CrmList::where('status', 1)->pluck('titulo');
 
-      
+
         return view('dashboard.index', [
             'notfic' => $notfic,
             'total' => $total,
@@ -72,9 +73,33 @@ class DashController extends Controller
             'users' => $users,
             'listname' => $listname
         ]);
-        
-   
+
+
     }
+
+    public function downloadArquivo($id)
+    {
+        // Obtenha o registro do CRM_Sales pelo ID
+        $crmSales = CrmSales::find($id);
+
+        if ($crmSales->status_consulta === 'DISPONIVEL') {
+            // Obtenha o caminho do arquivo do banco de dados
+            $caminhoArquivo = $crmSales->file_consulta;
+
+            // Extraia o nome do arquivo do caminho
+            $nomeArquivo = basename($caminhoArquivo);
+            // dd($nomeArquivo);
+            if (Storage::exists('public/profiles/' . $nomeArquivo)) {
+                return Storage::download('public/profiles/' . $nomeArquivo);
+            } else {
+                return response()->json(['error' => 'Arquivo não encontrado.'], 404);
+            }
+        } else {
+            return response()->json(['error' => 'O status da consulta não é DISPONIVEL.'], 400);
+        }
+    }
+
+
 
 
     public function logout()

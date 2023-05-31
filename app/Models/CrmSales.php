@@ -20,11 +20,14 @@ class CrmSales extends Model
         'email',
         'telefone',
         'id_lista',
-        'link_pay',
-        'id_pay',
-        'status',
+        'link_pay_limpanome',
+        'link_pay_consulta',
+        'id_pay_limpanome',
+        'id_pay_consulta',
+        'status_limpanome',
+        'status_consulta',
         'file'
-      
+
     ];
 
     protected $hidden = [

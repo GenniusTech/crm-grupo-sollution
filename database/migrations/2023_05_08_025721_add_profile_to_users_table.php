@@ -10,6 +10,10 @@ class AddProfileToUsersTable extends Migration
     {
         Schema::table('Users', function (Blueprint $table) {
             $table->binary('perfil')->nullable();
+            $table->string('cpf', 30)->nullable()->unique();
+            $table->string('consulta_g')->default(0);
+            $table->string('consulta_m')->default(0);
+            $table->string('consulta_p')->default(0);
         });
     }
 
