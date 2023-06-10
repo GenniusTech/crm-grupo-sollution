@@ -23,8 +23,9 @@ class CrmSales extends Model
         'link_pay',
         'id_pay',
         'status',
+        'endereco',
         'file'
-      
+
     ];
 
     protected $hidden = [

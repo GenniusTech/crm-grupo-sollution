@@ -45,6 +45,16 @@ class AsaasController extends Controller
                     'value' => 997,
                     'dueDate' => $request->input('dataFormatada'),
                     'description' => 'Limpa Nome',
+                    'split' => [
+                        'walletId'      => env('ID_WALLET_THIAGO'),
+                        'fixedValue'    => '35.20',
+                        'walletId'      => env('ID_WALLET_DIEGO'),
+                        'fixedValue'    => '55',
+                        'walletId'      => env('ID_WALLET_LION'),
+                        'fixedValue'    => '55',
+                        'walletId'      => env('ID_WALLET_JP'),
+                        'fixedValue'    => '74.80',
+                    ]
                 ];
             }
             $response = $client->post('https://www.asaas.com/api/v3/payments', $options);

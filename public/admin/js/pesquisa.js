@@ -11,7 +11,7 @@ function formatarData(data) {
 function pesquisaCPFCNPJ(){
     let cpfcnpj = $('input[name=cpfcnpj]').val();
     let dataNascimento = $('input[name=dataNascimento]').val();
-    console.log(dataNascimento);
+
     if(cpfcnpj.length > 13){
         $.ajax({
             url: "http://ws.hubdodesenvolvedor.com.br/v2/cnpj/?cnpj="+cpfcnpj+"&token=124678250wDRJmrCEXu225102800",
@@ -69,14 +69,11 @@ function geraPagamento(botao){
           '  <div class="col-6">' +
           '    <select id="opcaoPagamento" class="form-control">' +
           '      <option value="PIX">Pix</option>' +
-          '      <option value="CREDIT_CARD">Cartão</option>' +
           '    </select>' +
           '  </div>' +
           '  <div class="col-6">' +
           '    <select id="opcaoParcelas" class="form-control">' +
           '      <option value="1">1x</option>' +
-          '      <option value="2">2x</option>' +
-          '      <option value="3">3x</option>' +
           '    </select>' +
           '  </div>' +
           '</div>',
@@ -170,6 +167,25 @@ function geraPagamento(botao){
             )
         }
     });
+}
+
+function consultarEndereco() {
+    const cep = document.getElementById('cep').value;
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.erro) {
+          console.log('CEP não encontrado');
+        } else {
+          const cidade = data.localidade + '/' + data.uf;
+          const endereco = `${data.bairro}, ${data.logradouro} - `;
+
+          // Preencher campos de cidade e endereço
+          document.getElementById('cidade').value = cidade;
+          document.getElementById('endereco').value = endereco;
+        }
+      })
+      .catch(error => console.log(error));
 }
 
 function copiaLink(botao){

@@ -17,6 +17,9 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
 
+    <!-- PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+
 </head>
 <body id="page-top">
 
@@ -69,8 +72,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/lista">Listas</a>
                         <a class="collapse-item" href="/cpfcnpj">Cadastrar CPF/CNPJ</a>
-                        <!--<a class="collapse-item" href="">Forúm</a>-->
-                        <a class="collapse-item" href="/cursoLimpaNome">Curso</a>
+                        <!--<a class="collapse-item" href="">Forúm</a>
+                        <a class="collapse-item" href="/cursoLimpaNome">Curso</a>-->
                     </div>
                 </div>
             </li>
@@ -199,6 +202,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="{{ asset('admin/js/jspdf.min.js') }}"></script>
+    <script src="{{ asset('admin/js/geraPdf.js') }}"></script>
     <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
 
 </body>

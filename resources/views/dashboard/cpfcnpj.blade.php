@@ -42,8 +42,8 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                 aria-labelledby="dropdownMenuLink">
                                 <div class="dropdown-header">Opções:</div>
-                                <a class="dropdown-item" href="#">Baixar Modelo Ficha Associativa</a>
-                                <a class="dropdown-item" href="#">Baixar Modelo Contrato</a>
+                                <a class="dropdown-item" href="#" onclick="criarFichaAssociativa()">Gerar Ficha Associativa</a>
+                                <a class="dropdown-item" href="#" onclick="criarContrato()">Gerar Contrato</a>
                             </div>
                         </div>
                     </div>
@@ -92,9 +92,20 @@
                                     <div class="form-group col-sm-12 col-lg-6">
                                         <input type="number" id="telefone" class="form-control form-control-user" name="telefone" placeholder="Telefone">
                                     </div>
-                                    {{-- <div class="form-group col-sm-12 col-lg-12">
-                                        <input type="file" style="padding:5px;" class="form-control form-control-user" name="file" required>
-                                    </div> --}}
+
+                                    <div class="form-group col-sm-12 col-lg-6">
+                                        <input type="number" onblur="consultarEndereco()" id="cep" class="form-control form-control-user" name="cep" placeholder="CEP">
+                                    </div>
+                                    <div class="form-group col-sm-12 col-lg-6">
+                                        <input type="text" id="cidade" class="form-control form-control-user" name="cidade" placeholder="Cidade" readonly>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-lg-10">
+                                        <input type="text" id="endereco" class="form-control form-control-user" name="endereco" placeholder="Endereço" readonly>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-lg-2">
+                                        <input type="text" id="num" class="form-control form-control-user" name="num" placeholder="N°">
+                                    </div>
+
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-user btn-block"> Cadastrar </button>

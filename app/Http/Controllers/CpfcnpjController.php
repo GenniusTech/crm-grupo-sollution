@@ -51,7 +51,7 @@ class CpfcnpjController extends Controller
             'dataNascimento'=> 'required|string|max:255',
             'email'=> 'required|string|max:255',
             'telefone'=> 'required|string|max:20',
-            'file' => 'file|max:2048', // 2 MB
+            'file' => 'file|max:2048',
         ]);
 
         $dataNascimento = Carbon::createFromFormat('d/m/Y', $request->dataNascimento)->format('Y-m-d');
@@ -65,6 +65,7 @@ class CpfcnpjController extends Controller
             'dataNascimento' => $dataNascimento,
             'email' => $request->email,
             'telefone' => $request->telefone,
+            'endereco' => $request->cep.' - '.$request->cidade.'/'.$request->endereco.' N°'.$request->num,
             'id_lista'=> $lista->id,
             'id_user' => Auth()->user()->id,
             'status' => 'PENDING',
