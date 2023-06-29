@@ -8,19 +8,19 @@ function formatarData(data) {
     return dia + '/' + mes + '/' + ano;
 }
 
-function pesquisaCPFCNPJ(){
+function pesquisaCPFCNPJ() {
     let cpfcnpj = $('input[name=cpfcnpj]').val();
     let dataNascimento = $('input[name=dataNascimento]').val();
     console.log(dataNascimento);
-    if(cpfcnpj.length > 13){
+    if (cpfcnpj.length > 13) {
         $.ajax({
-            url: "http://ws.hubdodesenvolvedor.com.br/v2/cnpj/?cnpj="+cpfcnpj+"&token=124678250wDRJmrCEXu225102800",
-            method:'GET',
-            complete: function(xhr){
+            url: "http://ws.hubdodesenvolvedor.com.br/v2/cnpj/?cnpj=" + cpfcnpj + "&token=124678250wDRJmrCEXu225102800",
+            method: 'GET',
+            complete: function (xhr) {
 
-              response = xhr.responseJSON;
+                response = xhr.responseJSON;
 
-              if(response.return == 'OK') {
+                if (response.return == 'OK') {
                     response = response.result;
                     $('#pesquisa').addClass('d-none');
                     $('#cadastro').removeClass('d-none');
@@ -29,20 +29,20 @@ function pesquisaCPFCNPJ(){
                     $('#cpfcnpj').val(response.numero_de_inscricao);
                     $('#situacao').val(response.situacao);
                     $('#dataNascimento').val(response.dt_situacao_cadastral);
-              } else {
-                alert('Erro ao pesquisar documento!');
-              }
+                } else {
+                    alert('Erro ao pesquisar documento!');
+                }
             }
         });
-    }else{
+    } else {
         $.ajax({
-            url: "https://ws.hubdodesenvolvedor.com.br/v2/cpf/?cpf="+cpfcnpj+"&data="+formatarData(dataNascimento)+"&token=124678250wDRJmrCEXu225102800",
-            method:'GET',
-            complete: function(xhr){
+            url: "https://ws.hubdodesenvolvedor.com.br/v2/cpf/?cpf=" + cpfcnpj + "&data=" + formatarData(dataNascimento) + "&token=124678250wDRJmrCEXu225102800",
+            method: 'GET',
+            complete: function (xhr) {
 
-              response = xhr.responseJSON;
+                response = xhr.responseJSON;
 
-              if(response.return == 'OK') {
+                if (response.return == 'OK') {
                     response = response.result;
                     $('#pesquisa').addClass('d-none');
                     $('#cadastro').removeClass('d-none');
@@ -52,15 +52,15 @@ function pesquisaCPFCNPJ(){
                     $('#situacao').val(response.situacao_cadastral);
                     $('#dataNascimento').val(response.data_nascimento);
 
-              } else {
-                alert('Erro ao pesquisar documento!');
-              }
+                } else {
+                    alert('Erro ao pesquisar documento!');
+                }
             }
         });
     }
 }
 
-function geraPagamento(botao){
+function geraPagamento(botao) {
     var id = botao.dataset.id;
     var name = botao.dataset.name;
     var cpfcnpj = botao.dataset.cpfcnpj;
@@ -70,10 +70,10 @@ function geraPagamento(botao){
     var dataFormatada = dataAtual.toISOString().split('T')[0];
 
     var data = {
-        id              : id,
-        name            : name,
-        cpfcnpj         : cpfcnpj,
-        dataFormatada   : dataFormatada
+        id: id,
+        name: name,
+        cpfcnpj: cpfcnpj,
+        dataFormatada: dataFormatada
     };
 
     $.ajax({
@@ -81,12 +81,12 @@ function geraPagamento(botao){
         type: 'POST',
         data: data,
         dataType: 'json',
-        success: function(response) {
+        success: function (response) {
 
             var data = {
-                LINK_PAY        : response.json['paymentLink'],
-                STATUS          : 'PENDING_PAY',
-                paymentId       : response.json['paymentId']
+                LINK_PAY: response.json['paymentLink'],
+                STATUS: 'PENDING_PAY',
+                paymentId: response.json['paymentId']
             };
 
             $.ajax({
@@ -94,7 +94,7 @@ function geraPagamento(botao){
                 type: 'POST',
                 data: data,
                 dataType: 'json',
-                success: function(response) {
+                success: function (response) {
                     Swal.fire({
                         title: 'Sucesso!',
                         text: `${response.message}`,
@@ -102,13 +102,13 @@ function geraPagamento(botao){
                         showCancelButton: false,
                         confirmButtonColor: '#008000',
                         confirmButtonText: 'OK'
-                      }).then((result) => {
+                    }).then((result) => {
                         if (result.isConfirmed) {
                             location.reload();
                         }
-                      })
+                    })
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     Swal.fire(
                         'Problemas!',
                         'Não foi possível gerar essa cobrança, contate o suporte!',
@@ -118,7 +118,7 @@ function geraPagamento(botao){
             });
 
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire(
                 'Problemas!',
                 'Não foi possível gerar essa cobrança, contate o suporte!',
@@ -128,7 +128,7 @@ function geraPagamento(botao){
     });
 }
 
-function copiaLink(botao){
+function copiaLink(botao) {
     var link = botao.getAttribute('data-link');
     var tempInput = document.createElement('input');
     tempInput.value = link;
@@ -145,9 +145,9 @@ function copiaLink(botao){
     )
 }
 
-function pesquisaOneClube(){
+function pesquisaOneClube() {
     let cpf = $('input[name=cpf_busca]').val();
-    if(cpf != '' || cpf != null || cpf != undefined){
+    if (cpf != '' || cpf != null || cpf != undefined) {
         const url = 'https://oneclube.com.br/api/buscar.php?token=Lk45v87CxO97bHg7h&modo=leitura&cpf=' + cpf;
 
         const xhr = new XMLHttpRequest();
@@ -163,19 +163,19 @@ function pesquisaOneClube(){
                     let match;
                     while ((match = regex.exec(line)) !== null) {
                         if (match.length === 3) {
-                        const key = match[1].trim();
-                        const value = match[2].trim();
-                        data[key] = value;
+                            const key = match[1].trim();
+                            const value = match[2].trim();
+                            data[key] = value;
                         }
                     }
                 });
 
-                if(data.Status == "Ativo"){
+                if (data.Status == "Ativo") {
                     $('#registrer').removeClass('d-none');
                     $('#busca').addClass('d-none');
                     $('input[name=name]').val(data.Nome);
                     $('input[name=cpf]').val(cpf);
-                }else{
+                } else {
                     Swal.fire(
                         'Problemas!',
                         'Seu usuário não está ativo na One Clube!',
@@ -204,13 +204,13 @@ function pesquisaOneClube(){
 
 function consultaGratis() {
     var data = {
-        cpfcnpj         : $('input[name=cpfcnpj]').val(),
-        cliente         : $('input[name=cliente]').val(),
-        situacao        : $('input[name=situacao]').val(),
-        dataNascimento  : $('#dataNascimento').val(),
-        email           : $('input[name=email]').val(),
-        telefone        : $('input[name=telefone]').val(),
-        id_user         : $('input[name=id_user]').val(),
+        cpfcnpj: $('input[name=cpfcnpj]').val(),
+        cliente: $('input[name=cliente]').val(),
+        situacao: $('input[name=situacao]').val(),
+        dataNascimento: $('#dataNascimento').val(),
+        email: $('input[name=email]').val(),
+        telefone: $('input[name=telefone]').val(),
+        id_user: $('input[name=id_user]').val(),
     }
 
     $.ajax({
@@ -218,7 +218,7 @@ function consultaGratis() {
         type: 'POST',
         data: data,
         dataType: 'json',
-        success: function(response) {
+        success: function (response) {
             Swal.fire({
                 title: 'Sucesso!',
                 text: `${response.message}`,
@@ -226,13 +226,13 @@ function consultaGratis() {
                 showCancelButton: false,
                 confirmButtonColor: '#008000',
                 confirmButtonText: 'OK'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = "/dashboard";
                 }
             })
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire(
                 'Problemas!',
                 'Não foi possível gerar essa operação, contate o suporte!',
@@ -242,7 +242,30 @@ function consultaGratis() {
     });
 }
 
-function geraPagamentoConsulta(botao){
+function consultarEndereco() {
+    const cep = document.getElementById('cep').value;
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                console.log('CEP não encontrado');
+            } else {
+                const cidade = data.localidade + '/' + data.uf;
+                const endereco = `${data.logradouro}, ${data.bairro}`;
+                const bairro = `${data.bairro}`;
+                const estado = `${data.uf}`;
+
+                // Preencher campos de cidade e endereço
+                document.getElementById('cidade').value = cidade;
+                document.getElementById('endereco').value = endereco;
+                document.getElementById('bairro').value = bairro;
+                document.getElementById('estado').value = estado;
+            }
+        })
+        .catch(error => console.log(error));
+}
+
+function geraPagamentoConsulta(botao) {
     var id = botao.dataset.id;
     var name = botao.dataset.name;
     var cpfcnpj = botao.dataset.cpfcnpj;
@@ -252,10 +275,10 @@ function geraPagamentoConsulta(botao){
     var dataFormatada = dataAtual.toISOString().split('T')[0];
 
     var data = {
-        id              : id,
-        name            : name,
-        cpfcnpj         : cpfcnpj,
-        dataFormatada   : dataFormatada
+        id: id,
+        name: name,
+        cpfcnpj: cpfcnpj,
+        dataFormatada: dataFormatada
     };
 
     $.ajax({
@@ -263,12 +286,12 @@ function geraPagamentoConsulta(botao){
         type: 'POST',
         data: data,
         dataType: 'json',
-        success: function(response) {
+        success: function (response) {
 
             var data = {
-                link_pay_consulta     : response.json['paymentLink'],
-                status_consulta       : 'PENDING_PAY',
-                id_pay_consulta       : response.json['paymentId']
+                link_pay_consulta: response.json['paymentLink'],
+                status_consulta: 'PENDING_PAY',
+                id_pay_consulta: response.json['paymentId']
             };
 
             $.ajax({
@@ -276,7 +299,7 @@ function geraPagamentoConsulta(botao){
                 type: 'PUT',
                 data: data,
                 dataType: 'json',
-                success: function(response) {
+                success: function (response) {
                     Swal.fire({
                         title: 'Sucesso!',
                         text: `Cobrança gerada com sucesso!`,
@@ -284,13 +307,13 @@ function geraPagamentoConsulta(botao){
                         showCancelButton: false,
                         confirmButtonColor: '#008000',
                         confirmButtonText: 'OK'
-                      }).then((result) => {
+                    }).then((result) => {
                         if (result.isConfirmed) {
                             location.reload();
                         }
-                      })
+                    })
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     Swal.fire(
                         'Problemas!',
                         'Não foi possível gerar essa cobrança, contate o suporte!',
@@ -300,7 +323,7 @@ function geraPagamentoConsulta(botao){
             });
 
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire(
                 'Problemas!',
                 'Não foi possível gerar essa cobrança, contate o suporte!',

@@ -5,8 +5,6 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Perfil</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-exclamation-triangle fa-sm text-white-50"></i> Suporte</a>
         </div>
 
         <!-- Cadastrar CPF/CNPJ -->
@@ -17,9 +15,9 @@
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Meus dados</h6>
                     </div>
-                    
+
                     <div class="card-body">
-                       
+
                         <form id="cadastro" class="user" method="POST" action="{{ route('update') }}">
                             <input type="hidden" value={{  csrf_token() }} name="_token">
                             <div class="row">
@@ -33,7 +31,7 @@
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
                                         <input type="password" id="senha" class="form-control form-control-user" name="passwordHash" placeholder="*************">
-                                      
+
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                         <div class="form-group">
@@ -60,20 +58,20 @@
                                 </form>
                             </div>
                         </div>
-                        
-                        
+
+
                         <script>
                             window.addEventListener('DOMContentLoaded', function() {
                                 // Obtem os elementos dos campos de email e nome
                                 var email = document.getElementById('situacao');
                                 var name = document.getElementById('cpfcnpj');
-                        
+
                                 // Preenche os campos com os valores obtidos de $dados
                                 email.value = "{{ $dados->email }}";
                                 name.value = "{{ $dados->name }}";
                             });
                         </script>
-                        
+
                     </div>
                 </div>
             </div>

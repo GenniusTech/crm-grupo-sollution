@@ -82,5 +82,16 @@
 
 </div>
 
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: 'Atenção',
+            text: 'Caso já tenha acesso a franquia One Positive, não é necessário o cadastro na One Motos, utilize as mesmas credenciais!',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
+
 @endsection
 

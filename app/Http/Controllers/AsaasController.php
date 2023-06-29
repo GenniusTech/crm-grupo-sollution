@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 
 use App\Models\CrmSales;
+use App\Models\User;
 
 class AsaasController extends Controller
 {
@@ -23,19 +24,19 @@ class AsaasController extends Controller
                 'cpfCnpj'   => $request->input('cpfcnpj'),
             ],
         ];
-        $response = $client->post('https://www.asaas.com/api/v3/customers', $options);
+        $response = $client->post('https://sandbox.asaas.com/api/v3/customers', $options);
         $body = (string) $response->getBody();
         $data = json_decode($body, true);
         if ($response->getStatusCode() === 200) {
             $customerId = $data['id'];
             $options['json'] = [
                 'customer' => $customerId,
-                'billingType' => 'PIX',
-                'value' => 1500,
+                'billingType' => 'UNDEFINED',
+                'value' => 375,
                 'dueDate' => $request->input('dataFormatada'),
                 'description' => 'Limpa Nome',
             ];
-            $response = $client->post('https://www.asaas.com/api/v3/payments', $options);
+            $response = $client->post('https://sandbox.asaas.com/api/v3/payments', $options);
             $body = (string) $response->getBody();
             $data = json_decode($body, true);
             if ($response->getStatusCode() === 200) {
@@ -68,7 +69,7 @@ class AsaasController extends Controller
                 'cpfCnpj'   => $request->input('cpfcnpj'),
             ],
         ];
-        $response = $client->post('https://www.asaas.com/api/v3/customers', $options);
+        $response = $client->post('https://sandbox.asaas.com/api/v3/customers', $options);
         $body = (string) $response->getBody();
         $data = json_decode($body, true);
         if ($response->getStatusCode() === 200) {
@@ -80,7 +81,7 @@ class AsaasController extends Controller
                 'dueDate' => $request->input('dataFormatada'),
                 'description' => 'Consulta CPF/CNPJ',
             ];
-            $response = $client->post('https://www.asaas.com/api/v3/payments', $options);
+            $response = $client->post('https://sandbox.asaas.com/api/v3/payments', $options);
             $body = (string) $response->getBody();
             $data = json_decode($body, true);
             if ($response->getStatusCode() === 200) {
@@ -100,19 +101,56 @@ class AsaasController extends Controller
         }
     }
 
-    public function webhook(Request $request)
+    public function receberPagamento(Request $request)
     {
-        $data = $request->json();
-        $id = $data->get('payment.id');
-        $status = $data->get('payment.status');
+        // Obtenha os dados do JSON recebido
+        $jsonData = $request->json()->all();
 
-        CrmSales::where('id_pay', $id)->update(['status' => $status]);
+        // Verifique se o evento é PAYMENT_CONFIRMED
+        if ($jsonData['event'] === 'PAYMENT_CONFIRMED') {
+            // Obtenha o ID da requisição
+            $idRequisicao = $jsonData['payment']['id'];
 
-        $file = public_path('log.txt');
-        $response = ['success' => true];
 
-        file_put_contents($file, json_encode($response));
+            // Consulta à tabela crm_sales para obter o nome do usuário e o CPF
+            $crmSale = CrmSales::where('id_pay_limpa', $idRequisicao)->first();
+            if ($crmSale) {
+                $idUsuario = $crmSale->id_user;
 
-        return response()->json($response);
+                // Atualizar o campo status_limpanome para PAYMENT_CONFIRMED na tabela crm_sales
+                $crmSale->status_limpanome = 'PAYMENT_CONFIRMED';
+                $crmSale->save();
+
+                // Consulta à tabela users para obter o CPF
+                $user = User::where('id', $idUsuario)->first();
+                if ($user) {
+                    $cpf = $user->cpf;
+
+                    // Dados para enviar na requisição POST
+                    $dados = [
+                        'cpf' => $cpf,
+                        'value' => 375,
+                        'description' => 'One Motos',
+                        'product' => 2
+                    ];
+
+                    // Enviar a requisição POST para oneclube.com.br/recebe
+                    $client = new Client();
+                    $response = $client->post('https://homolologacao.oneclube.com.br/confirm-sale-product', [
+                        'form_params' => $dados
+                    ]);
+
+                    // Verificar se a requisição teve sucesso
+                    if ($response->getStatusCode() === 200) {
+                        // Retornar true em caso de sucesso
+                        return response()->json(['status' => 'success', 'response' => true]);
+                    }
+                }
+            }
+        }
+
+        // Caso contrário, retorne uma resposta de erro
+        return response()->json(['status' => 'error', 'message' => 'Evento não suportado']);
     }
+
 }

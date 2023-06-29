@@ -54,10 +54,12 @@ class DashController extends Controller
         $percent = ($count * 10 <= 100) ? $count * 10 : 100;
 
         $sales = CrmSales::where('id_user', $user->id)
-        ->whereHas('list', function($query) {
-            $query->where('status', 1);
+        ->whereHas('list', function ($query) {
+            $query->where('status', 1)
+                ->where('produto', 2);
         })
         ->get();
+
 
         $users = User::orderBy('name')->get();
 

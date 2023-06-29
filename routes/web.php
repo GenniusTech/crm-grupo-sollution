@@ -9,6 +9,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ContratoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,6 +18,7 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 
 Route::get('/forgot-password', [RegisterController::class, 'register'])->name('register');
 Route::post('/forgot-password', [RegisterController::class, 'register_action'])->name('register_action');
+Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -45,5 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil',[PerfilController::class, 'perfil'])->name('perfil');
     Route::post('/user/update', [PerfilController::class, 'update'])->name('update');
     Route::post('/perfilimg', [PerfilController::class, 'perfilimg'])->name('perfilimg');
+
+    Route::post('geraContrato', [ContratoController::class, 'index'])->name('geraContrato');
 
 });

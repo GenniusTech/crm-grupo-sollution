@@ -26,7 +26,8 @@ class CrmSales extends Model
         'id_pay_consulta',
         'status_limpanome',
         'status_consulta',
-        'file'
+        'file',
+        'produto'
 
     ];
 

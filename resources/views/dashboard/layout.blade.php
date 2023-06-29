@@ -8,14 +8,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CRM - One Positive</title>
+    <title>CRM - One Motos</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
+    <!-- PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
 
 </head>
 <body id="page-top">
@@ -25,7 +27,7 @@
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-text mx-3">One Positive</div>
+                <div class="sidebar-brand-text mx-3">One Motos</div>
             </a>
 
             <hr class="sidebar-divider my-0">
@@ -36,7 +38,7 @@
 
             <hr class="sidebar-divider">
 
-            <div class="sidebar-heading">
+            <!--<div class="sidebar-heading">
                 Canais
             </div>
 
@@ -53,7 +55,7 @@
                 </div>
             </li>
 
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider"> -->
 
             <div class="sidebar-heading">
                 Negócios
@@ -63,16 +65,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Limpa Nome</span>
+                    <span>One Motos</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/lista">Listas</a>
-                        <a class="collapse-item" href="/cpfcnpj">Cadastrar CPF/CNPJ</a>
-                        @if (Auth::user()->consulta_g == 1)
-                            <a class="collapse-item" href="/consulta_gratis">Minha Consulta Grátis</a>
-                        @endif
-                        <a class="collapse-item" href="/cursoLimpaNome">Curso</a>
+                        <a class="collapse-item" href="/cpfcnpj">Vender</a>
                     </div>
                 </div>
             </li>
@@ -181,7 +179,7 @@
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Grupo Sollution</span>
+                            <span>Copyright &copy; One Clube</span>
                         </div>
                     </div>
                 </footer>
@@ -200,7 +198,10 @@
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="{{ asset('admin/js/jspdf.min.js') }}"></script>
+    <script src="{{ asset('admin/js/geraPdf.js') }}"></script>
     <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
+    
 
 </body>
 

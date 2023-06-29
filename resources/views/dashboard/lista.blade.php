@@ -5,8 +5,6 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Gestão de Listas</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-exclamation-triangle fa-sm text-white-50"></i> Suporte</a>
         </div>
         @if ($errors->any())
         <div class="alert alert-danger">
@@ -29,7 +27,7 @@
             <div class="col-sm-12 col-lg-6">
                 <div class="card shadow mb-4">
                     <a href="#collapseCardLista" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                        <h6 class="m-0 font-weight-bold text-primary">Cadastro de Lista</h6>
+                        <h6 class="m-0 font-weight-bold text-success">Cadastro de Lista</h6>
                     </a>
 
                     <div class="collapse" id="collapseCardLista">
@@ -50,7 +48,7 @@
                                         </div>
                                         <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-primary btn-user btn-block"> Cadastrar </button>
+                                                <button type="submit" class="btn btn-success btn-user btn-block"> Cadastrar </button>
                                             </div>
                                         </div>
 
@@ -66,7 +64,7 @@
             <div class="col-sm-12 col-lg-6">
                 <div class="card shadow mb-4">
                     <a href="#collapseCardNotification" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                        <h6 class="m-0 font-weight-bold text-primary">Gerar noficações</h6>
+                        <h6 class="m-0 font-weight-bold text-success">Gerar noficações</h6>
                     </a>
 
                     <div class="collapse" id="collapseCardNotification">
@@ -90,7 +88,7 @@
                                         </div>
                                         <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-primary btn-user btn-block"> Enviar </button>
+                                                <button type="submit" class="btn btn-success btn-user btn-block"> Enviar </button>
                                             </div>
                                         </div>
                                     </div>
@@ -101,79 +99,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /end administrador -->
-            @if (Auth::user()->consulta_p === '1')
-            <div class="col-sm-12 col-lg-12">
-                <div class="card shadow mb-4">
-                    <a href="#collapseCardConsulta" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                        <h6 class="m-0 font-weight-bold text-primary">Gerar Consultas</h6>
-                    </a>
-
-                    <div class="collapse show" id="collapseCardConsulta">
-                        <div class="card-body">
-
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>N°</th>
-                                            <th>Cliente</th>
-                                            <th>CPF</th>
-                                            <th class="text-center">Adc Documento</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        @foreach ($sales as $key => $sale)
-                                        <tr>
-                                            <th>{{ $key + 1 }}</th>
-                                            <th>{{ $sale->cliente }}</th>
-                                            <th>{{ $sale->cpfcnpj }}</th>    <!--$sale->id-->
-                                            <th class="text-center">
-                                                <button value="{{ $sale->id }}" class="btn btn-success" type="button" data-toggle="modal" data-target="#logoutModal{{ $sale->id }}">
-                                                    <i class="fa fa-file"></i>
-                                                </button>
-
-                                                <div class="modal fade" id="logoutModal{{ $sale->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Realizar consulta.</h5>
-                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">×</span>
-                                                                </button>
-                                                            </div>
-                                                            <form class="user" method="POST"  enctype="multipart/form-data" action="{{ route('GerarConsultas',['id'=> $sale->id]) }}">
-                                                                <input type="hidden" value={{  csrf_token() }} name="_token">
-                                                            <div class="modal-body">
-                                                                <p>Anexe ao Input abaixo o PDF da Consulta</p>
-                                                                    <div class="form-group">
-                                                                        <input type="file" class="form-control form-control-user" name="file" required>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <p class="text-danger">Atente-se para realizar a consulta corretamente!</p>
-                                                                    </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
-                                                                <button class="btn btn-success" type="submit">Solicitar</button>
-                                                            </div>
-                                                        </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </th>
-                                        </tr>
-                                        @endforeach
-                                    </tfoot>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
 
             @endif
             <div class="col-sm-12 col-lg-12">
@@ -186,7 +111,7 @@
                 <div class="card shadow mb-4">
                     <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Listagem de Listas</h6>
+                        <h6 class="m-0 font-weight-bold text-success">Listagem de Listas</h6>
                     </div>
 
                     <div class="card-body">
@@ -209,8 +134,8 @@
                                         <th>{{ $key + 1 }}</th>
                                         <th>{{ $list->titulo }}</th>
                                         <th>{{ $list->dataInicial }} <br> {{ $list->dataFinal }}</th>
-                                        <th class="text-center"><a href="{{ route('sales.export', ['id_lista' => $list->id]) }}" ><button class="btn btn-primary"><i class="fa fa-credit-card text-light"></i></button></a></th>
-                                        <th class="text-center"><button class="btn btn-primary"><i class="fa fa-file text-light"></i></button></th>
+                                        <th class="text-center">Em breve.</th>
+                                        <th class="text-center">Em breve.</th>
 
                                         <th class="text-center">
                                             @if (Auth::user()->profile === 'admin')

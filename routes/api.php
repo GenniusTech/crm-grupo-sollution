@@ -5,6 +5,7 @@ use App\Http\Controllers\ApiCrmSalesController;
 use App\Http\Controllers\ApiGeraLinkController;
 use App\Http\Controllers\ApiListaExcelController;
 use App\Http\Controllers\AsaasController;
+use App\Http\Controllers\ContratoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,3 +31,6 @@ Route::post('/webhook', [AsaasController::class, 'webhook'])->name('webhook')->n
 Route::put('/crm-sales/{id}', [ApiCrmSalesController::class, 'updateCrmSales'])->name('updateCrmSales');
 Route::post('/consultaGratis', [ApiConsultaGratisController::class, 'ConsultaGratis'])->name('ConsultaGratis');
 Route::post('listaExcel', [ApiListaExcelController::class, 'listaExcel'])->name('listaExcel');
+Route::post('geraContrato', [ContratoController::class, 'index'])->name('geraContrato');
+Route::post('assas', [AssasController::class, 'receberPagamento'])->name('assas.receberPagamento');
+

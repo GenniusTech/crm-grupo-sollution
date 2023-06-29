@@ -96,6 +96,7 @@ class CpfcnpjController extends Controller
             'id_user' => Auth()->user()->id,
             'status_consulta' => 'PENDING',
             'status_limpanome' => 'PENDING',
+            'produto' => 2
         ]);
 
         if ($request->hasFile('file')) {
